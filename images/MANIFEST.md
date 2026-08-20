@@ -3,7 +3,12 @@
 
 This is the contract between content (Claude) and imagery (ChatGPT). Every image the course needs is listed here with its **exact filename**, where it appears, and an art direction prompt. Save finished images into this `images/` folder with these exact filenames. The HTML already links to them; when a file lands, it appears in the presentation automatically.
 
-**Read the Art Direction section of GUIDANCE.md (section 8) before generating anything.** The short version:
+**This file is self-contained.** Everything needed to generate a requested image is here: the
+house style below, and a complete brief for each outstanding request. GUIDANCE.md section 8 is
+the project's source of truth for art direction and governs if the two ever disagree, but you do
+not need to open it to work from this manifest.
+
+House style, which applies to every image in this file:
 
 - Painterly, storybook-illustration style; classic book plates, not photorealism, not comics.
 - Palette: deep blues and near-blacks for chaos and night; warm golds, ambers, firelight for wisdom and revelation; muted greens for journeys. Consistent across every image.
@@ -18,9 +23,10 @@ Status key: [ ] needed, [x] delivered.
 
 ## ▶ OUTSTANDING REQUESTS (read this first)
 
-**None. All 70 images in this file are delivered and placed, as of 10 August 2026.**
+**No images are currently outstanding.**
 
-When an image is needed, it is listed here as a table of filenames with a pointer to its full art direction in the session section below, and its checkbox there reads `[ ]`. Nothing in this file needs regenerating; please do not overwrite delivered artwork.
+All 71 images in this file are delivered and placed; their checkboxes read `[x]`. Nothing
+else needs regenerating, and delivered artwork must not be overwritten.
 
 ---
 
@@ -83,8 +89,34 @@ Wide-format artwork for the chapter-select menu. Keep each one simple and iconic
 - [x] `s02-empty-tomb-dawn-illus.jpg` — "Myth became fact."
   *A garden tomb cut into rock, the round stone rolled aside, gold dawn light spilling out of the opening into a grey-blue garden. No figures. The light does the preaching. Public-domain scriptural scene; render freely.*
 
-- [x] `s02-struck-bell-illus.jpg` — "So the Bible just copied the older myths?" (NEW, needed)
+- [x] `s02-struck-bell-illus.jpg` — Session 2, slide 7, "So the Bible just copied the older myths?"
   *A great weathered bronze bell hanging in a dark valley at night, caught at the instant of being struck, with rings of warm golden light spreading outward across the hills in every direction, near and far. The rings should read as one source producing many echoes. No figures, no text, no visible ringer. This image carries the course's central argument: an echo does not create the sound.*
+
+- [x] `s02-two-floods-illus.jpg` — Session 2, slide 8, "Same waters. A different God." (delivered 20 August 2026)
+
+  **What the slide argues, so the picture can carry it.** The class has just been told that
+  nearly every culture on earth remembers a great flood, and that Genesis is not one more entry
+  in that pile but God's own account of the event the rest of the world half remembers. This
+  image has to show *one* catastrophe understood two ways. If it reads as two different floods,
+  it argues the opposite of the slide.
+
+  **Art direction.** A single rain-dark deluge rendered as one continuous scene but read two
+  ways across the frame. On the left, above churning grey water, the suggestion of capricious
+  idol-figures crowded together and quarrelling, the water rising as an act of irritation. On
+  the right the same flood, but the cloud is breaking and a covenant bow of muted color arches
+  down to the waterline, with a single vessel riding steady beneath it. Deep blues and
+  near-blacks in the storm; warm gold and amber where the light breaks through. Painterly
+  storybook-plate style, per the house style above. Any figures faceless, silhouetted, or seen
+  from behind. Fearsome is fine, gory is not. No text or lettering anywhere in the image.
+
+  **Composition requirement, the one that matters most.** One unbroken horizon line running
+  edge to edge, a single continuous body of water, no panel divider, no seam, no diptych. The
+  two readings are a gradient across one painting, not two pictures joined.
+
+  **Format.** JPG, 16:9, 1920x1080 minimum.
+
+  **Check before delivering.** Does it read as one flood? Is there any seam or panel split? Any
+  lettering? Any face? If yes to any of the last three, regenerate.
 
 - [x] `s02-eternity-shore-hero.jpg` — Ecclesiastes 3:11 backdrop.
   *A small lone figure standing on a dark shore beneath an immense field of stars, the still sea reflecting them so the figure stands between two skies. Quiet, aching, beautiful. The scale gap between figure and sky is the subject.*
@@ -255,10 +287,13 @@ Wide-format artwork for the chapter-select menu. Keep each one simple and iconic
 
 ## Delivery notes for ChatGPT
 
+Your lane is making the picture. Everything after that belongs to Claude.
+
 1. Match filenames exactly, including hyphens; the HTML finds images by name.
-2. After saving files here, update the checkbox to [x] and note any deviations at the bottom of this file.
-3. If you believe a slide needs an image not listed here, add a proposed entry under "Proposed additions" below and tell Jason; Claude will place it in the HTML.
-4. Do not edit index.html directly; structural changes route through Claude (GUIDANCE.md section 7).
+2. Save the file into `images/` and stop there. Do not update the checkbox, the outstanding-requests block, the counts, or the deviation notes. Claude keeps this file's records and will do it after checking the delivered image against its brief.
+3. Tell Jason what you delivered, and say so plainly if the image departs from its brief in any way. That note is useful; edits to this file are not.
+4. If you believe a slide needs an image not listed here, describe it to Jason. Claude will add the entry and place it in the HTML.
+5. Do not edit index.html, GUIDANCE.md, or README.md, and do not run any git command. Structural and repository changes route through Claude (GUIDANCE.md section 7).
 
 ## Proposed additions
 
@@ -269,3 +304,19 @@ Wide-format artwork for the chapter-select menu. Keep each one simple and iconic
 - `s06-black-armor-illus.jpg` was revised at Jason's request from a fantasy forge-like setting to an original cold space-opera medical chamber so the slide reads more clearly as a Star Wars echo. The armor, mask, machinery, and composition remain original rather than replicas of franchise designs.
 
 - `s02-two-charts-hero.jpg` was delivered with the two charts abutting along a seam rather than overlapping as the direction asked, with the coastline and ridgeline continuing unbroken across the join. Accepted as delivered, and noted here because it is an improvement rather than a compromise: the continuation across the boundary states "two hands, one shape" more legibly than an overlap would have. Everything else matches the direction, including the prohibition on lettering.
+
+- `s02-two-floods-illus.jpg` met the composition requirement that mattered most: one unbroken
+  horizon, a single continuous sea, no seam or panel split, so it reads as one flood rather than
+  two. Storm dark to the left, gold breaking to the right, covenant bow arching down to the
+  waterline, ark riding steady beneath it, no lettering, faces absent. One deviation worth
+  recording: the figures massed in the storm cloud on the left were directed as capricious idols
+  quarrelling above the water, and they read as stone idol forms with hollow faces and raised
+  arms, but their posture is ambiguous enough that a viewer could take them for the drowning
+  rather than for the gods who sent the flood. Their placement high in the sky, above the
+  waterline, is what tips the reading toward idols. The teacher notes for slide 8 narrate the
+  contrast aloud, which resolves the ambiguity in the room, so the image is serviceable as
+  delivered, and accepted as delivered. Recorded rather than treated as a defect, because the
+  slide's argument rests on that left side reading as the petty gods of the older account, and
+  Jason may want to revisit it later. If he does, the fix is a regeneration that gives the cloud
+  figures quarrelling postures and idol trappings, thrones or crowns or raised implements, and
+  keeps them clear of the waterline so nothing reads as a swimmer.

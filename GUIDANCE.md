@@ -51,7 +51,7 @@ This class is taught in a **Protestant/Evangelical** context. Pageau is Eastern 
 7. **Handle magic in fiction pastorally.** Some families are cautious about Harry Potter and fairy tale magic. The teacher notes must include a brief, respectful treatment: the difference between literary magic as story mechanics and the occult practices Scripture forbids. Never mock the concern.
 8. **Use Peterson's psychology as a witness, not a foundation.** Maps of Meaning establishes brilliantly that the archetypal patterns are real, universal, and indispensable to human life. But Peterson's account is psychological and stops short of the stories being true in history. The class affirms his observations and then presses through them: the patterns are written into us because the God of Scripture wrote them into reality, and the Hero's story actually happened, in Judea, in the flesh. Peterson material should be presented as "even viewed purely psychologically, the pattern holds," never as the ceiling of the claim. Where his framing diverges from orthodox Christian teaching (e.g., treating the resurrection primarily as archetype), the teacher notes must name the divergence plainly and kindly.
 9. **Default Bible translation: NIV**, chosen for accessibility. Quote it accurately. ESV or KJV may be used where a specific rendering helps, with the translation noted.
-10. **Introduce the guides once, then use their tools.** Pageau and Peterson are introduced to the class by name exactly once, on session 2 slide 11, where each is given an occupation, a job in the course, and the rule that governs every later mention: neither man is preaching, and that is precisely why his agreement counts. Session 1 states their two ideas without attaching the names, so the class weighs the ideas before it is told whose they are. After session 2, a surname may appear bare.
+10. **Introduce the guides once, then use their tools.** Pageau and Peterson are introduced to the class by name exactly once, on session 2 slide 12, where each is given an occupation, a job in the course, and the rule that governs every later mention: neither man is preaching, and that is precisely why his agreement counts. Session 1 states their two ideas without attaching the names, so the class weighs the ideas before it is told whose they are. After session 2, a surname may appear bare.
 
     Two rules follow. First, **every later mention must be doing one of two jobs**: corroborating the claim from outside the faith, or handing the teacher a lens that makes something visible. A name that is not doing one of those is name-dropping; drop the name and keep the idea. Second, **do not let Peterson become a foil.** The formula "Peterson says X, true as far as it goes, but" is corrosive if it runs every week: it trains the room to hear his name as the setup for a correction, and an outside witness who is always slightly wrong is worth nothing as corroboration. Press past him only where the divergence genuinely matters (sessions 2, 6, and 8). Elsewhere let him be simply right, and say so. Session 7 says so explicitly, on purpose.
 
@@ -175,21 +175,26 @@ Claude writes the `<img>` tags with these exact filenames and descriptive alt te
 
 ## 7. Division of Labor
 
-**Claude (structure and content):**
+**Claude (structure, content, and the repository):**
 - Course content: session outlines, slide text, Scripture selection, teacher notes
 - All HTML/CSS/JS: builds and maintains the single index.html experience
-- The image manifest: filenames, placement, and art direction prompts for every image
+- The image manifest: filenames, placement, art direction prompts, and all of its bookkeeping, meaning checkboxes, the outstanding-requests block, delivery deviations, and counts
+- This document and README.md, including the Revision Log
+- The repository: all git operations, commits, branches, pushes, and merges to GitHub, and the GitHub Pages configuration
 - Assembly and consistency: merging contributions, enforcing this document
 
-**ChatGPT (visual embellishment):**
-- Generates images per the manifest, saves them into `images/` with the exact manifest filenames
-- May propose additional images; if so, it adds them to the manifest and tells Jason so Claude can place them
-- May suggest visual polish, but structural HTML changes route through Claude to keep files consistent
+**ChatGPT (image content only):**
+- Generates images per the manifest and saves them into `images/` with the exact manifest filenames
+- That is the whole lane. Claude takes ownership from the moment a file lands in `images/`.
+- Does not update checkboxes, the outstanding-requests block, deviation notes, counts, GUIDANCE.md, README.md, or anything in git. Bookkeeping that looks helpful still has to be verified and redone, so it costs time rather than saving it.
+- May propose additional images, or flag that a delivered image exceeds or misses its brief; say so to Jason, and Claude records it and places it
 
 **Jason (owner and editor):**
 - Final say on all theology, tone, and content
 - Reviews each session before it is considered done
 - Ferries context between the AIs when needed (e.g., pasting manifest entries into ChatGPT)
+
+**Why the lane is drawn there.** Two agents editing the same bookkeeping produces drift that is expensive to catch: a count updated in one file and not another, a checkbox flipped while the README still calls the image outstanding, a status line that contradicts the manifest. One agent owning the record end to end is what keeps these four files telling the same story.
 
 **Rule for both AIs:** never rename existing files, never restructure folders, and never edit the other's domain without flagging it. Additive contributions are safe; destructive ones require Jason's approval.
 
@@ -225,7 +230,7 @@ Claude writes the `<img>` tags with these exact filenames and descriptive alt te
 
 ### Current status: revision, not construction
 
-**The build is complete.** All eleven sessions exist inside `index.html` (136 slides as of this revision), all eleven teacher notes documents are written, and every image in the manifest has been generated and placed (70 images). Nothing in the course is a stub.
+**The build is complete.** All eleven sessions exist inside `index.html` (137 slides as of this revision), all eleven teacher notes documents are written, and all 71 images in the manifest have been generated and placed. Nothing in the course is a stub.
 
 What this changes for contributors: assume a session already exists before you write anything. Read the existing slides and the matching notes document for a session before proposing a change to it, and prefer surgical edits to rewrites. The build process below is retained because it still governs any new session added under the expansion options in section 4.
 
@@ -258,6 +263,7 @@ Before you touch anything, confirm you can answer yes to all of these:
 - If I reworded a recurring phrase, did I search for it everywhere else it appears (section 9, item 7)?
 - If I cited Pageau or Peterson, is that mention corroborating from outside the faith or handing over a lens, and did I avoid turning Peterson into a weekly foil (section 2, item 10)?
 - Did I log anything material in the Revision Log (section 11)?
+- If an image landed in `images/`, did Claude, not ChatGPT, do the manifest bookkeeping and the commit (section 7)?
 
 If any answer is no, stop and fix it or ask Jason.
 
@@ -266,6 +272,18 @@ If any answer is no, stop and fix it or ask Jason.
 ## 11. Revision Log
 
 Dated entries for material changes to the course. Newest first. Small copy fixes do not need an entry; anything that changes slide counts, theology, wording that recurs across files, or the structure of a notes document does.
+
+**20 August 2026**
+
+*Session 2's answer to the derivation objection was rebuilt so that Genesis is not presented as one flood account among several. At Jason's direction: the written priority of Gilgamesh over Genesis is not the point, the event behind the accounts is real and remembered worldwide, and the authority of Genesis rests on God having given it to Moses.*
+
+- **Session 2, slide 7 rewritten.** The old slide conceded the timeline on the skeptic's terms ("the myths came earlier in time") and then answered with the echo and shadow images, which left Genesis reading as a late entry in a list. The slide now concedes the tablet dates out loud and cheerfully, moves the argument off literary chronology and onto the event, and gives the positive evidence: nearly every people on earth remembers the waters, peoples who never met, all recalling a judgment survived by a remnant.
+- **Session 2, new slide 8, "Same waters. A different God."** Carries the contrast that keeps Genesis distinct: in Gilgamesh the gods drown mankind for making noise and then squabble over the survivor; in Genesis a righteous God judges real evil and binds himself by covenant never again. States the authority claim plainly, that Genesis is the account God gave to Moses of what the world still half remembered. The material was already in the session 2 notes, section 7; it had never reached the wall. Session 2 is now 16 slides; the course is 137.
+- **Session 2, slide 9 (formerly 8).** Absorbed the "Gilgamesh before, Star Wars after" point, reframed as echoes running both ways out from the center rather than a timeline Genesis sits inside, and trimmed to fit.
+- **Session 2 notes:** renumbered throughout (old slides 8 to 15 are now 9 to 16), slide 7 guidance rewritten, a block added for the new slide 8, and a fifth answer added to the derivation material in section 7, the authority one: Genesis is distinguished not by being the oldest telling but by who gave it. Timeline slide labels updated; the minute budget was left alone, since the split redistributes existing material rather than adding to it. Watch the 0:25 block, which now covers three slides instead of two.
+- **A caution written into the notes.** Teachers are told to rest the argument on the shared human memory of a flood and on the authority of the account, and specifically not to claim that geology has settled the question of a single worldwide flood. That claim is contested and would hand a skeptical student an easy rebuttal on the session's key slide.
+- **Division of labor narrowed, section 7 rewritten.** At Jason's direction, ChatGPT's lane is now image content only: generate the picture, save it into `images/` under the exact filename, stop. Claude owns everything downstream, including the manifest's checkboxes, outstanding-requests block, deviation notes and counts, GUIDANCE.md and README.md, and every git operation, commits, branches, pushes, and merges. The delivery notes at the bottom of the manifest were rewritten to match, and a line was added to the section 10 checklist. The prompt for the change: on this delivery the manifest and GUIDANCE were updated from two directions at once, which left the README still calling the image outstanding and a count reading 70 where it should have read 71. Nothing was lost, but catching it took longer than doing it once would have.
+- **One new image delivered:** `s02-two-floods-illus.jpg` for the new slide, one deluge read two ways across a single unbroken horizon. Delivered at 1920x1080 with no lettering and no faces, holding the requirement that mattered most: one continuous sea, no seam, so it reads as a single flood rather than two. One deviation is recorded under Delivery deviations in the manifest, that the idol figures massed in the storm cloud could be misread as the drowning rather than as the gods who sent the flood; the slide 8 talking points narrate the contrast aloud, which resolves it in the room. The manifest was made self-contained so it can be handed to ChatGPT without GUIDANCE.md, and a stale "(NEW, needed)" label was cleared from the delivered `s02-struck-bell-illus.jpg` so no delivered artwork gets regenerated by mistake.
 
 **10 August 2026**
 

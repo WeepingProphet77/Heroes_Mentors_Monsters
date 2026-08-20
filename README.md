@@ -11,7 +11,7 @@ A church class for older teens and adults on the structure of reality, the stori
 
 ## Status
 
-**Complete.** All eleven sessions are built: 136 slides, 70 images, and eleven teacher notes documents. Every image in the manifest has been delivered and placed.
+**Complete.** All eleven sessions are built: 137 slides, 71 images, and eleven teacher notes documents. Every image in the manifest has been delivered and placed.
 
 ## The eleven sessions
 
