@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Local tool settings
+.claude/settings.local.json
+
+# Word temp files
+~$*

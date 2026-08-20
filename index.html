@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<!--
+  HEROES, MENTORS, AND MONSTERS
+  A single-file course experience. See GUIDANCE.md before editing.
+  Structure:
+    1. <style>        : all CSS
+    2. #home          : course home screen (chapter select)
+    3. section.session: one strictly delimited block per session (s01..s11)
+    4. <script>       : navigation engine (hash routing #sNN/slideIndex)
+  Contributors: add/edit content only inside clearly marked session blocks.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heroes, Mentors, and Monsters</title>
+<style>
+  :root{
+    --ink:#0a1020;          /* deep night, chaos */
+    --deep:#12203a;         /* dark blue */
+    --mist:#8ea3c2;         /* faded blue, secondary text */
+    --gold:#d9a94f;         /* firelight, revelation */
+    --gold-soft:#e8c98a;
+    --parchment:#f4ead6;    /* primary text on dark */
+    --green:#5f7d5a;        /* journeys and growth */
+    --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--ink);
+    color:var(--parchment);
+    font-family:var(--serif);
+    overflow:hidden;
+  }
+  img{max-width:100%}
+
+  /* ============ HOME SCREEN ============ */
+  #home{
+    position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(217,169,79,.14), transparent 60%),
+      linear-gradient(180deg,#0d1526 0%, var(--ink) 55%);
+  }
+  .home-hero{
+    position:relative;text-align:center;
+    padding:9vh 24px 5vh;
+  }
+  .home-hero .art{
+    position:absolute;inset:0;z-index:0;overflow:hidden;
+  }
+  .home-hero .art img{
+    width:100%;height:100%;object-fit:cover;opacity:.35;
+  }
+  .home-hero .art::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,16,32,.2), var(--ink) 96%);
+  }
+  .home-hero > *:not(.art){position:relative;z-index:1}
+  .kicker{
+    font-family:var(--sans);font-size:13px;letter-spacing:.35em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:18px;
+  }
+  h1.series{
+    font-size:clamp(38px,6vw,72px);font-weight:normal;line-height:1.08;
+    color:var(--parchment);
+  }
+  .pitch{
+    max-width:640px;margin:22px auto 0;font-size:clamp(16px,1.6vw,20px);
+    line-height:1.6;color:var(--mist);font-style:italic;
+  }
+  .verse-sig{
+    margin-top:26px;font-family:var(--sans);font-size:13px;letter-spacing:.08em;
+    color:var(--gold-soft);
+  }
+
+  .tiles{
+    display:grid;gap:18px;
+    grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+    padding:2vh 5vw 9vh;max-width:1300px;margin:0 auto;
+  }
+  .tile{
+    position:relative;border:1px solid rgba(217,169,79,.25);border-radius:10px;
+    overflow:hidden;cursor:pointer;background:var(--deep);
+    transition:transform .18s ease, border-color .18s ease;
+    min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;
+  }
+  .tile:hover{transform:translateY(-3px);border-color:var(--gold)}
+  .tile .tile-art{position:absolute;inset:0}
+  .tile .tile-art img{width:100%;height:100%;object-fit:cover;opacity:.55}
+  .tile .tile-art::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,16,32,.05) 30%, rgba(10,16,32,.92) 88%);
+  }
+  .tile .num{
+    position:absolute;top:12px;left:14px;z-index:2;
+    font-family:var(--sans);font-size:12px;letter-spacing:.2em;color:var(--gold);
+  }
+  .tile .t-body{position:relative;z-index:2;padding:16px}
+  .tile h3{font-weight:normal;font-size:21px;line-height:1.2}
+  .tile p{font-family:var(--sans);font-size:13px;color:var(--mist);margin-top:6px;line-height:1.45}
+  .tile.coming{cursor:default}
+  .tile.coming:hover{transform:none;border-color:rgba(217,169,79,.25)}
+  .tile.coming .t-body{opacity:.55}
+  .tile .badge{
+    position:absolute;top:10px;right:12px;z-index:2;
+    font-family:var(--sans);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--mist);border:1px solid rgba(142,163,194,.4);
+    padding:3px 8px;border-radius:20px;
+  }
+  .home-foot{
+    text-align:center;padding:0 24px 7vh;color:var(--mist);
+    font-family:var(--sans);font-size:12px;letter-spacing:.06em;
+  }
+
+  /* ============ PLAYER / SLIDES ============ */
+  #player{position:absolute;inset:0;display:none}
+  body.playing #home{display:none}
+  body.playing #player{display:block}
+
+  .session{display:none}
+  .session.active{display:block}
+
+  .slide{
+    position:absolute;inset:0;display:none;
+    padding:6vh 8vw;overflow:hidden;
+  }
+  .slide.current{display:flex;flex-direction:column;justify-content:center;animation:fadein .45s ease}
+  @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .slide .bg{position:absolute;inset:0;z-index:0}
+  .slide .bg img{width:100%;height:100%;object-fit:cover}
+  .slide .bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,16,32,.55), rgba(10,16,32,.82));
+  }
+  .slide > *:not(.bg){position:relative;z-index:1}
+
+  .s-kicker{
+    font-family:var(--sans);font-size:14px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:2.4vh;
+  }
+  .slide h2{
+    font-weight:normal;font-size:clamp(34px,5vw,64px);line-height:1.1;max-width:22ch;
+  }
+  .slide .lead{
+    font-size:clamp(19px,2vw,27px);line-height:1.55;max-width:58ch;
+    margin-top:3vh;color:var(--parchment);
+  }
+  .slide .sub{
+    font-family:var(--sans);font-size:clamp(14px,1.3vw,17px);color:var(--mist);
+    margin-top:2.4vh;line-height:1.6;max-width:70ch;
+  }
+  .center{align-items:center;text-align:center}
+  .center h2,.center .lead,.center .sub{margin-left:auto;margin-right:auto}
+
+  .statement{
+    font-size:clamp(30px,4vw,54px);line-height:1.25;max-width:26ch;color:var(--gold-soft);
+  }
+  .doorways p{
+    font-size:clamp(22px,2.6vw,34px);line-height:1.5;margin:2.2vh 0;font-style:italic;
+  }
+  .scripture blockquote{
+    font-size:clamp(21px,2.4vw,32px);line-height:1.65;max-width:56ch;
+    border-left:3px solid var(--gold);padding-left:28px;
+  }
+  .scripture .ref{
+    font-family:var(--sans);font-size:15px;letter-spacing:.12em;color:var(--gold);
+    margin-top:2.6vh;text-transform:uppercase;
+  }
+  .pairs{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:900px;margin-top:3vh;
+    font-size:clamp(17px,1.7vw,23px)}
+  .pairs div{padding:1.6vh 22px;line-height:1.4}
+  .pairs .order{background:rgba(217,169,79,.12);border-left:3px solid var(--gold)}
+  .pairs .chaos{background:rgba(18,32,58,.65);border-left:3px solid #31456b;color:var(--mist)}
+  .qlist{margin-top:3vh;max-width:62ch}
+  .qlist .q{
+    margin:2.2vh 0;padding-left:22px;border-left:3px solid var(--gold);
+    font-size:clamp(18px,1.9vw,25px);line-height:1.5;
+  }
+  .qlist .tag{
+    display:block;font-family:var(--sans);font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:6px;
+  }
+
+  /* ============ CHROME (controls) ============ */
+  .chrome{position:absolute;z-index:10;font-family:var(--sans)}
+  #btn-home{
+    top:20px;left:20px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--mist);background:rgba(10,16,32,.55);border:1px solid rgba(142,163,194,.35);
+    padding:8px 14px;border-radius:20px;cursor:pointer;
+  }
+  #btn-home:hover{color:var(--gold);border-color:var(--gold)}
+  #progress{
+    bottom:22px;left:50%;transform:translateX(-50%);
+    font-size:12px;letter-spacing:.22em;color:var(--mist);
+  }
+  #session-label{
+    top:22px;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(142,163,194,.75);
+    white-space:nowrap;
+  }
+  .arrow{
+    top:50%;transform:translateY(-50%);
+    background:none;border:none;color:rgba(142,163,194,.5);font-size:34px;
+    cursor:pointer;padding:18px 12px;font-family:var(--serif);
+  }
+  .arrow:hover{color:var(--gold)}
+  #prev{left:8px}
+  #next{right:8px}
+
+  @media (max-width:700px){
+    .slide{padding:5vh 9vw}
+    .pairs{grid-template-columns:1fr}
+    .arrow{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     HOME SCREEN
+     ================================================================ -->
+<div id="home">
+  <header class="home-hero">
+    <div class="art">
+      <img src="images/s00-series-title-hero.jpg"
+           alt="A lone figure holding a lantern at the edge of a dark wood, warm light against deep night"
+           onerror="this.remove()">
+    </div>
+    <h1 class="series">Heroes, Mentors,<br>and Monsters</h1>
+    <p class="pitch">The stories we love keep telling us the same thing because it is true,
+      and Scripture tells it first and best.</p>
+    <div class="verse-sig">"The light shines in the darkness, and the darkness has not overcome it." &nbsp;John 1:5</div>
+  </header>
+
+  <div class="tiles" id="tiles">
+    <!-- Tiles are generated by the script from the COURSE data below. -->
+  </div>
+
+  <div class="home-foot">Use arrow keys or tap to move through slides &middot; Esc returns here</div>
+</div>
+
+<!-- ================================================================
+     PLAYER
+     ================================================================ -->
+<div id="player">
+  <button class="chrome" id="btn-home" title="Back to menu (Esc)">Menu</button>
+  <div class="chrome" id="session-label"></div>
+  <button class="chrome arrow" id="prev" title="Previous slide">&#10094;</button>
+  <button class="chrome arrow" id="next" title="Next slide">&#10095;</button>
+  <div class="chrome" id="progress"></div>
+
+  <!-- ============================================================
+       SESSION 01 : THE WORLD HAS A SHAPE
+       Anchor: Genesis 1; John 1:1-5 (NIV)
+       ============================================================ -->
+  <section class="session" id="s01">
+
+    <!-- s01/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s01-light-darkness-hero.jpg"
+        alt="Light breaking over dark waters at the moment of creation" onerror="this.remove()"></div>
+      <div class="s-kicker">Session One</div>
+      <h2>The World Has a Shape</h2>
+      <p class="sub">Genesis 1 &middot; John 1:1&ndash;5</p>
+    </div>
+
+    <!-- s01/1 : hook, the doorways -->
+    <div class="slide center doorways">
+      <p>"A long time ago, in a galaxy far, far away&hellip;"</p>
+      <p>"Once upon a time&hellip;"</p>
+      <p>"In a hole in the ground there lived a hobbit."</p>
+      <p class="sub">Something in you just leaned forward. Why?</p>
+    </div>
+
+    <!-- s01/2 : hook, the shared landscape -->
+    <div class="slide">
+      <div class="bg"><img src="images/s01-story-doorways-illus.jpg"
+        alt="An open storybook glowing with warm light in a dark room" onerror="this.remove()"></div>
+      <h2>Every enduring story opens onto the same landscape</h2>
+      <p class="lead">A warm, lit, ordered place: the village, the farm, the fireside.
+        And all around it, a dark unknown: the wood, the wild, the deep.</p>
+      <p class="sub">Nobody has to explain this map to us. We recognize it on sight.</p>
+    </div>
+
+    <!-- s01/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">Reality has a shape,<br>and every true story traces it.</p>
+      <p class="sub">This is the sentence of the week. Take it home with you.</p>
+    </div>
+
+    <!-- s01/4 : story, the ordered world and the dark wood -->
+    <div class="slide">
+      <div class="bg"><img src="images/s01-village-darkwood-illus.jpg"
+        alt="A lamplit village at the edge of a vast shadowed forest" onerror="this.remove()"></div>
+      <h2>The lit clearing and the dark wood</h2>
+      <div class="pairs">
+        <div class="order">The Shire, with its gardens and suppers</div>
+        <div class="chaos">The Old Forest, where the trees watch</div>
+        <div class="order">Hogwarts, warm halls and house tables</div>
+        <div class="chaos">The Forbidden Forest, past the last lantern</div>
+        <div class="order">Geppetto's workshop, firelight on wood shavings</div>
+        <div class="chaos">The open sea, and what swims in it</div>
+      </div>
+      <p class="sub">Order is where things have names and places. Chaos is where they do not. Yet.</p>
+    </div>
+
+    <!-- s01/5 : story, here be dragons -->
+    <div class="slide">
+      <div class="bg"><img src="images/s01-chaos-dragon-illus.jpg"
+        alt="A serpent coiling in dark waters at the edge of an old map" onerror="this.remove()"></div>
+      <h2>Here be dragons</h2>
+      <p class="lead">Old mapmakers wrote it at the edge of the known world.
+        Every culture drew the same border: beyond the ordered land, something coils and waits.</p>
+      <p class="sub">Scripture knows this creature too, and is not afraid to name it:
+        the deep, the serpent, Leviathan.</p>
+    </div>
+
+    <!-- s01/6 : scripture, Genesis -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s01-creation-deep-hero.jpg"
+        alt="The Spirit of God hovering over dark primordial waters" onerror="this.remove()"></div>
+      <blockquote>"In the beginning God created the heavens and the earth.
+        Now the earth was formless and empty, darkness was over the surface of the deep,
+        and the Spirit of God was hovering over the waters."</blockquote>
+      <p class="ref">Genesis 1:1&ndash;2 &middot; NIV</p>
+      <p class="sub">Watch what God does with the formless dark: he separates, he names, he fills.
+        Day from night. Sea from sky. Formless, then formed. This is the first act of the whole Bible:
+        order called out of chaos by a voice.</p>
+    </div>
+
+    <!-- s01/7 : the Hebrew behind "formless and empty" -->
+    <div class="slide">
+      <p class="s-kicker">The Hebrew</p>
+      <h2>Tohu va-bohu</h2>
+      <p class="lead">"Formless and empty" is two rhyming words in Hebrew,
+        <em>tohu va-bohu</em>: wild and waste, a trackless nowhere.
+        Robert Alter translates the pair "welter and waste."</p>
+      <div class="pairs">
+        <div class="chaos">Tohu: no shape, no border, no order</div>
+        <div class="order">Days one to three: God separates and forms</div>
+        <div class="chaos">Bohu: no life, no inhabitant, nothing filling it</div>
+        <div class="order">Days four to six: God fills what he formed</div>
+      </div>
+      <p class="sub">Genesis names the problem in two words, then spends six days answering it
+        in two movements. Centuries later Jeremiah looks at a ruined land and reaches for the
+        same two words (Jeremiah 4:23). Un-creation is creation running backward.</p>
+    </div>
+
+    <!-- s01/8 : scripture, John -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s01-logos-light-hero.jpg"
+        alt="A single shaft of light descending into deep darkness" onerror="this.remove()"></div>
+      <blockquote>"In the beginning was the Word, and the Word was with God, and the Word was God.
+        He was with God in the beginning. Through him all things were made;
+        without him nothing was made that has been made. In him was life,
+        and that life was the light of all mankind. The light shines in the darkness,
+        and the darkness has not overcome it."</blockquote>
+      <p class="ref">John 1:1&ndash;5 &middot; NIV</p>
+    </div>
+
+    <!-- s01/9 : go deeper, the Logos -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>The Logos</h2>
+      <p class="lead">John wrote in Greek, and the word he chose was <em>Logos</em>:
+        word, reason, the ordering principle that makes the cosmos hang together.
+        The Greeks had been searching for it for centuries.</p>
+      <p class="lead">John's staggering claim: the order of the world is not a force.
+        It is a Person. And the Person took on flesh and moved into the neighborhood.</p>
+      <p class="sub">Two ideas will follow us for eleven weeks. Reality is patterned, and the
+        pattern is meaningful. And every human life is lived on the border between order and chaos,
+        with stories as our maps. John goes further than either: the Mapmaker has stepped onto the map.</p>
+    </div>
+
+    <!-- s01/10 : the landing -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s01-lantern-threshold-illus.jpg"
+        alt="A lantern held up at the threshold between firelight and night" onerror="this.remove()"></div>
+      <p class="statement">"The light shines in the darkness,<br>
+        and the darkness has not overcome it."</p>
+      <p class="lead">Where chaos touches your life this week, the Word is still ordering the deep.</p>
+      <p class="sub">Christ is not one hero among many. He is the Logos every hero echoes.</p>
+    </div>
+
+    <!-- s01/11 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>Where do you see order and chaos?</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Name the safe place and the dark wood in your favorite story.</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do you think every culture tells stories with this same map?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Genesis says creation began formless and empty. Where does your life feel that way right now?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          If the order of the world is a Person, what does trust look like when things fall apart?</div>
+      </div>
+    </div>
+
+    <!-- s01/12 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">The world has a shape,<br>and the Shape has a name.</p>
+      <p class="sub">Next week: Why Stories Ring True</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 01 ============ -->
+
+  <!-- ============================================================
+       SESSION 02 : WHY STORIES RING TRUE
+       Anchor: Ecclesiastes 3:11; Acts 17:22-31 (NIV)
+       ============================================================ -->
+  <section class="session" id="s02">
+
+    <!-- s02/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s02-constellation-hero.jpg"
+        alt="Night sky where the stars of different cultures trace the same hero figure" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Two</div>
+      <h2>Why Stories Ring True</h2>
+      <p class="sub">Ecclesiastes 3:11 &middot; Acts 17:22&ndash;31</p>
+    </div>
+
+    <!-- s02/1 : hook -->
+    <div class="slide center doorways">
+      <p>A chosen one leaves home.</p>
+      <p>A wise guide falls, so the young hero can rise.</p>
+      <p>A death that turns out not to be the end.</p>
+      <p class="sub">Which story am I describing? Exactly.</p>
+    </div>
+
+    <!-- s02/2 : hook, written apart -->
+    <div class="slide">
+      <h2>Written continents and centuries apart</h2>
+      <p class="lead">Flood stories from Babylon to China. Dragon slayers in every land.
+        Dying and rising gods told around fires long before Bethlehem.</p>
+      <p class="sub">Three possible explanations: coincidence, copying, or a pattern woven into the world itself.</p>
+    </div>
+
+    <!-- s02/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">Stories endure when they tell the truth<br>about how the world really is.</p>
+      <p class="sub">Most stories fade. The ones that capture the most real parts of reality persist.
+        Endurance is evidence.</p>
+    </div>
+
+    <!-- s02/4 : story, Addison's Walk -->
+    <div class="slide">
+      <div class="bg"><img src="images/s02-addisons-walk-illus.jpg"
+        alt="Two figures walking a tree-arched river path at night in deep conversation" onerror="this.remove()"></div>
+      <h2>A night walk in Oxford, 1931</h2>
+      <p class="lead">C.S. Lewis loved the old myths but called them lies, though lies
+        "breathed through silver." His friend disagreed.</p>
+      <p class="lead">J.R.R. Tolkien argued that we are sub-creators, made in the image of a Maker,
+        and that even our imperfect myths refract a fragment of the true light.</p>
+      <p class="sub">Twelve days later, Lewis wrote to a friend that he had passed from believing in God
+        to believing in Christ. The walk had everything to do with it.</p>
+    </div>
+
+    <!-- s02/5 : story, the fact the myths were reaching for -->
+    <div class="slide">
+      <div class="bg"><img src="images/s02-empty-tomb-dawn-illus.jpg"
+        alt="A garden tomb with the stone rolled away, gold dawn light spilling out" onerror="this.remove()"></div>
+      <h2>It really happened</h2>
+      <p class="lead">The dying and the rising that the old stories kept reaching for
+        stopped being a story. It happened, in daylight, in a real garden outside a real city.</p>
+      <p class="lead">Lewis's famous line "myth became fact" does not mean Christ is a myth.
+        It means the thing every myth was groping toward walked out of a tomb.</p>
+      <p class="sub">"&hellip;with this tremendous difference that it really happened."
+        C.S. Lewis, letter to Arthur Greeves, October 1931. Tolkien called the gospel
+        the true fairy-story, the joyous turn of history that does not deny sorrow but overturns it.</p>
+    </div>
+
+    <!-- s02/6 : the derivation objection answered -->
+    <div class="slide">
+      <div class="bg"><img src="images/s02-struck-bell-illus.jpg"
+        alt="A great bronze bell struck in a dark valley, rings of golden light spreading outward in every direction" onerror="this.remove()"></div>
+      <h2>"So the Bible just copied the older myths?"</h2>
+      <p class="lead">It is the oldest objection there is, and it has the logic backwards.
+        An echo does not create the sound. A shadow does not cast the man.</p>
+      <p class="lead">The myths came earlier in time. The pattern came first in reality,
+        because the God who authored reality was there before either one.</p>
+      <p class="sub">And look which way the echoes run: Gilgamesh before, Star Wars after.
+        A shape that keeps surfacing in every century, on every continent, is not a source
+        anyone copied. It is reality pressing the same truth into us, over and over.</p>
+    </div>
+
+    <!-- s02/7 : more real, not less -->
+    <div class="slide center">
+      <p class="s-kicker">Say It Carefully</p>
+      <p class="statement">The parallels do not make Scripture<br>less real. They make it more.</p>
+      <p class="lead">The myths dreamed the shape. Scripture reports the shape happening:
+        in a named place, on a dated day, under a governor whose name we know,
+        with witnesses who could be questioned and mostly died refusing to recant.</p>
+      <p class="sub">Everywhere else the pattern is a rumor. Here it has an address.</p>
+    </div>
+
+    <!-- s02/8 : scripture, Ecclesiastes -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s02-eternity-shore-hero.jpg"
+        alt="A small figure on a night shore beneath an immense field of stars" onerror="this.remove()"></div>
+      <blockquote>"He has made everything beautiful in its time. He has also set eternity
+        in the human heart; yet no one can fathom what God has done from beginning to end."</blockquote>
+      <p class="ref">Ecclesiastes 3:11 &middot; NIV</p>
+      <p class="sub">That ache the best stories leave behind? Solomon named it three thousand years ago:
+        eternity, set in the human heart.</p>
+    </div>
+
+    <!-- s02/9 : scripture, Acts -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s02-athens-hero.jpg"
+        alt="A robed figure speaking on a rocky hill before marble temples at dusk" onerror="this.remove()"></div>
+      <blockquote>"God did this so that they would seek him and perhaps reach out for him and find him,
+        though he is not far from any one of us. 'For in him we live and move and have our being.'
+        As some of your own poets have said, 'We are his offspring.'"</blockquote>
+      <p class="ref">Acts 17:27&ndash;28 &middot; NIV</p>
+      <p class="sub">Paul stands in Athens, a marketplace of myths, and instead of burning it down,
+        he quotes their own poets and points the longing home.</p>
+    </div>
+
+    <!-- s02/10 : our other two guides -->
+    <div class="slide">
+      <div class="bg"><img src="images/s02-two-charts-hero.jpg"
+        alt="Two hand-drawn charts overlapping on a dark table, the same coastline traced by two different hands" onerror="this.remove()"></div>
+      <p class="s-kicker">Our Other Two Guides</p>
+      <h2>Where last week's ideas came from</h2>
+      <p class="lead">Jonathan Pageau (say it pa-ZHOH) is an Orthodox Christian who carves icons
+        for a living. He studies symbolism: how reality is patterned, and how the same pattern
+        repeats at every scale, from a household to a kingdom to the cosmos.</p>
+      <p class="lead">Jordan Peterson is a clinical psychologist. He spent a career on one question:
+        why can human beings not stop telling these stories? His answer maps the border between
+        order and chaos where every ordinary life is lived.</p>
+      <p class="sub">Neither man is preaching at you. That is exactly why they are worth hearing.
+        When people looking through very different lenses keep sketching the same shape,
+        the shape is probably really there. We borrow their maps gladly.
+        We do not read them as Scripture.</p>
+    </div>
+
+    <!-- s02/11 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>Why do the same patterns keep surfacing?</h2>
+      <p class="lead">Peterson's answer: stories that survive generations are distilled maps for living,
+        and the useless ones died out. That is true, and it is no small thing.</p>
+      <p class="lead">But usefulness cannot explain the ache. The patterns persist because the Author
+        of reality wrote them into the world, and into us. Lewis put it plainly:
+        God sent the human race good dreams before he sent the news.</p>
+      <p class="sub">"We make still by the law in which we're made." Tolkien, Mythopoeia.
+        If the myths had said nothing like the gospel, that would be the strange thing.</p>
+    </div>
+
+    <!-- s02/12 : the landing -->
+    <div class="slide center">
+      <p class="statement">That ache is homesickness.</p>
+      <p class="lead">The best stories make us long for something no story can deliver.
+        The gospel is where the longing points, and it is not one more beautiful rumor:
+        it happened, in history, outside a real city, under a Roman governor.</p>
+      <p class="sub">Myth became fact, and did not stop being beautiful.</p>
+    </div>
+
+    <!-- s02/13 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>What made it ring true?</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          What story made you ache or cry, and what exactly did it touch?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Name a pattern you have spotted in three unrelated stories.</div>
+        <div class="q"><span class="tag">Deeper</span>
+          "Eternity in the human heart." Where do you feel that most?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Paul quoted pagan poets to preach Christ. What does that suggest about how we handle the culture's stories?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Someone tells you the resurrection is just another dying-and-rising god story. What do you say?</div>
+      </div>
+    </div>
+
+    <!-- s02/14 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">The stories ring true<br>because Someone struck the bell.</p>
+      <p class="sub">Next week: The Call of the Hero</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 02 ============ -->
+
+  <!-- ============================================================
+       SESSION 03 : THE CALL OF THE HERO
+       Anchor: Genesis 12:1-4; Exodus 3; 1 Samuel 16 (NIV)
+       ============================================================ -->
+  <section class="session" id="s03">
+
+    <!-- s03/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s03-open-road-hero.jpg"
+        alt="A road leading from a lamplit farm gate toward far mountains at first light" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Three</div>
+      <h2>The Call of the Hero</h2>
+      <p class="sub">Genesis 12:1&ndash;4 &middot; Exodus 3 &middot; 1 Samuel 16</p>
+    </div>
+
+    <!-- s03/1 : hook -->
+    <div class="slide center doorways">
+      <p>A farm boy stares past two setting suns.</p>
+      <p>A hobbit runs out his gate without a handkerchief.</p>
+      <p>A letter arrives, addressed to the cupboard under the stairs.</p>
+      <p class="sub">Every adventure begins the same way: with a summons.</p>
+    </div>
+
+    <!-- s03/2 : hook, the interruption -->
+    <div class="slide">
+      <div class="bg"><img src="images/s03-letter-doorstep-illus.jpg"
+        alt="A wax-sealed letter glowing faintly on a doormat in a dark hallway" onerror="this.remove()"></div>
+      <h2>The call interrupts</h2>
+      <p class="lead">It never comes when you are ready. It comes while you are herding sheep,
+        farming moisture, washing someone else's dishes.</p>
+      <p class="sub">The summons is always bigger than you, and never fully explained up front.</p>
+    </div>
+
+    <!-- s03/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">The hero is not the one who is ready.<br>The hero is the one who goes.</p>
+      <p class="sub">This is the sentence of the week.</p>
+    </div>
+
+    <!-- s03/4 : story, reluctance -->
+    <div class="slide">
+      <div class="bg"><img src="images/s03-threshold-look-back-illus.jpg"
+        alt="A young figure at a night gate between a warm doorway behind and a dark road ahead" onerror="this.remove()"></div>
+      <h2>The excuses are part of the pattern</h2>
+      <p class="lead">Luke: "I've got work to do." Frodo: "I am not made for perilous quests."
+        Moses: "Who am I?"</p>
+      <p class="lead">The call exposes the gap between who we are and what is asked. Reluctance is not
+        a disqualification; it is the standard response.</p>
+      <p class="sub">Notice what never happens: the call is never withdrawn because the hero feels unqualified.</p>
+    </div>
+
+    <!-- s03/5 : story, the cost -->
+    <div class="slide">
+      <h2>What the call costs</h2>
+      <p class="lead">Every call is a call away: from the Shire, from the farm, from the cupboard,
+        from Ur of the Chaldeans. The known world is the price of the promised one.</p>
+      <p class="sub">That is why we make excuses. It is not laziness; it is grief for the world
+        we are being asked to leave.</p>
+    </div>
+
+    <!-- s03/6 : scripture, Abram -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s03-abram-stars-hero.jpg"
+        alt="An old man with a staff walking into the desert night beneath an ocean of stars" onerror="this.remove()"></div>
+      <blockquote>"The LORD had said to Abram, 'Go from your country, your people and your father's
+        household to the land I will show you. I will make you into a great nation, and I will bless you;
+        I will make your name great, and you will be a blessing.' &hellip;
+        So Abram went, as the LORD had told him."</blockquote>
+      <p class="ref">Genesis 12:1&ndash;2, 4 &middot; NIV</p>
+      <p class="sub">No map. No destination. Only a command and a promise.
+        "So Abram went" may be the bravest sentence in the Bible.</p>
+    </div>
+
+    <!-- s03/7 : scripture, Moses -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s03-burning-bush-hero.jpg"
+        alt="A bush of golden flame, unconsumed, on a dark mountainside" onerror="this.remove()"></div>
+      <blockquote>"So now, go. I am sending you to Pharaoh to bring my people the Israelites
+        out of Egypt." But Moses said to God, "Who am I that I should go to Pharaoh and bring
+        the Israelites out of Egypt?" And God said, "I will be with you."</blockquote>
+      <p class="ref">Exodus 3:10&ndash;12 &middot; NIV</p>
+      <p class="sub">God does not answer "Who am I?" with a resume. He answers with himself.</p>
+    </div>
+
+    <!-- s03/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>The call has a Caller</h2>
+      <p class="lead">Peterson observes that a life becomes meaningful when you voluntarily shoulder
+        what the unknown asks of you. He is right, and every hero story in the room agrees with him.
+        But notice how the call arrives in those stories: by owl, by wizard, by accident.</p>
+      <p class="lead">In Scripture the call is personal: Abram, Moses, Samuel, each summoned by name.
+        And David, overlooked by his own father, was seen by God among the sheep.</p>
+      <p class="sub">"People look at the outward appearance, but the LORD looks at the heart." 1 Samuel 16:7, NIV</p>
+    </div>
+
+    <!-- s03/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">You are not an extra<br>in someone else's story.</p>
+      <p class="lead">The Caller still calls: to repentance, to a neighbor, to a task with your name on it.
+        And every call carries the promise Moses received: I will be with you.</p>
+    </div>
+
+    <!-- s03/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>What is calling you out of the known?</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Which call-to-adventure scene is your favorite, and what excuse does the hero make first?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do you think heroes almost never feel qualified?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Moses raised objection after objection at the bush. Which of his excuses sounds most like yours?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What "known world" might God be asking you to leave, and what promise would you need to trust in order to go?</div>
+      </div>
+    </div>
+
+    <!-- s03/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">The call always comes with a promise:<br>I will be with you.</p>
+      <p class="sub">Next week: The Mentor</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 03 ============ -->
+
+  <!-- ============================================================
+       SESSION 04 : THE MENTOR
+       Anchor: 1 Samuel 3; 2 Timothy 1 (NIV)
+       ============================================================ -->
+  <section class="session" id="s04">
+
+    <!-- s04/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s04-lantern-path-hero.jpg"
+        alt="A grey-robed elder with staff and lantern lighting a mountain path at night" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Four</div>
+      <h2>The Mentor</h2>
+      <p class="sub">1 Samuel 3 &middot; 2 Timothy 1</p>
+    </div>
+
+    <!-- s04/1 : hook -->
+    <div class="slide center doorways">
+      <p>An old hermit in the desert, keeping a strange sword.</p>
+      <p>A grey wanderer knocking at a round green door.</p>
+      <p>A torchlit cave: "It's dangerous to go alone! Take this."</p>
+      <p class="sub">Every hero gets a guide. Almost none of them gets to keep him.</p>
+    </div>
+
+    <!-- s04/2 : hook, the cave -->
+    <div class="slide">
+      <div class="bg"><img src="images/s04-cave-gift-illus.jpg"
+        alt="In a torchlit cave an old man offers a sword hilt-first to a small hooded traveler" onerror="this.remove()"></div>
+      <h2>Eight words from a cave, 1986</h2>
+      <p class="lead">"It's dangerous to go alone! Take this." A whole archetype in one line:
+        the elder who has walked the road, the gift that fits the road ahead, and the release.</p>
+      <p class="sub">Millions of kids received a sword from that old man. Nobody had to explain
+        the scene to any of them.</p>
+    </div>
+
+    <!-- s04/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">Wisdom equips you for a road<br>it cannot walk for you.</p>
+      <p class="sub">This is the sentence of the week.</p>
+    </div>
+
+    <!-- s04/4 : story, the three gifts -->
+    <div class="slide">
+      <h2>The mentor's three gifts</h2>
+      <div class="pairs">
+        <div class="order">A tool that fits the calling</div>
+        <div class="chaos">A sword, a lightsaber, a wand, a lamp</div>
+        <div class="order">A truth about who you are</div>
+        <div class="chaos">"Your father's sword." "You are a wizard."</div>
+        <div class="order">A push across the threshold</div>
+        <div class="chaos">"Go, and lie down." "Fly, you fools."</div>
+      </div>
+      <p class="sub">Notice what is never on the list: a guarantee.</p>
+    </div>
+
+    <!-- s04/5 : story, why mentors leave -->
+    <div class="slide">
+      <div class="bg"><img src="images/s04-mentor-falls-illus.jpg"
+        alt="A grey wizard's staff lying at the broken edge of a stone bridge over a fiery chasm" onerror="this.remove()"></div>
+      <h2>Why the mentor always leaves</h2>
+      <p class="lead">Obi-Wan is struck down. Gandalf falls in Moria. Dumbledore falls from the tower.
+        Jiminy gets ignored at the worst moments.</p>
+      <p class="lead">This is not sloppy plotting. If the guide stays, the hero never becomes one.</p>
+      <p class="sub">And hidden inside the pattern, a whisper of something greater:
+        "It is for your good that I am going away." John 16:7</p>
+    </div>
+
+    <!-- s04/6 : scripture, Samuel -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s04-samuel-lamp-hero.jpg"
+        alt="A boy sitting up on his mat in the dark temple, a small oil lamp still burning" onerror="this.remove()"></div>
+      <blockquote>"So Eli told Samuel, 'Go and lie down, and if he calls you, say,
+        "Speak, LORD, for your servant is listening."' So Samuel went and lay down in his place.
+        The LORD came and stood there, calling as at the other times, 'Samuel! Samuel!'
+        Then Samuel said, 'Speak, for your servant is listening.'"</blockquote>
+      <p class="ref">1 Samuel 3:9&ndash;10 &middot; NIV</p>
+      <p class="sub">Eli is old, failing, and compromised. He still does the one thing a mentor must do:
+        he teaches the boy to recognize the Voice, and then he steps out of the way.</p>
+    </div>
+
+    <!-- s04/7 : scripture, Paul to Timothy -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s04-paul-letter-hero.jpg"
+        alt="An old man's chained hands writing by candlelight in a stone cell" onerror="this.remove()"></div>
+      <blockquote>"I am reminded of your sincere faith, which first lived in your grandmother Lois
+        and in your mother Eunice and, I am persuaded, now lives in you also. For this reason I remind
+        you to fan into flame the gift of God, which is in you through the laying on of my hands.
+        For the Spirit God gave us does not make us timid, but gives us power, love and self-discipline."</blockquote>
+      <p class="ref">2 Timothy 1:5&ndash;7 &middot; NIV</p>
+      <p class="sub">An old man writes from a Roman prison to his spiritual son. Faith travels through
+        named, ordinary people. Grandmothers are mentors too.</p>
+    </div>
+
+    <!-- s04/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>The Mentor who stays</h2>
+      <p class="lead">Peterson reads the wise old man as the accumulated wisdom of the past,
+        handing you its tools. Pageau sees the mentor as the one who stands nearer heaven
+        and translates it down the mountain. Both are true, and both are temporary.</p>
+      <p class="lead">Every earthly mentor is flawed and every one departs: Eli's house is failing,
+        Paul writes on death row. Each hands the hero to a greater guide.</p>
+      <p class="sub">Jesus turned the pattern inside out: "It is for your good that I am going away,"
+        because the Helper comes. The Spirit is the Mentor who never leaves.</p>
+    </div>
+
+    <!-- s04/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">Whose voice are you<br>learning to recognize?</p>
+      <p class="lead">Every believer is Samuel, learning to hear. And every believer is called
+        to be an Eli for someone younger in the faith.</p>
+      <p class="sub">Who taught you to listen? Who is learning to listen from you?</p>
+    </div>
+
+    <!-- s04/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>Passing it down</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Who is the greatest mentor in fiction, and what exactly did he give the hero?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do you think the mentor almost always dies or departs before the end?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Who has been Eli to you, teaching you to recognize God's voice? Have you ever told them?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Who might God be handing you as a Timothy, and what excuse are you making? (Recall week 3.)</div>
+      </div>
+    </div>
+
+    <!-- s04/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">Every good mentor hands you<br>to the Mentor who stays.</p>
+      <p class="sub">Next week: The Monster Outside</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 04 ============ -->
+
+  <!-- ============================================================
+       SESSION 05 : THE MONSTER OUTSIDE
+       Anchor: 1 Samuel 17; Job 41 (NIV)
+       ============================================================ -->
+  <section class="session" id="s05">
+
+    <!-- s05/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s05-dragon-hall-hero.jpg"
+        alt="An immense dragon coiled on a hoard of gold in a dark mountain hall" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Five</div>
+      <h2>The Monster Outside</h2>
+      <p class="sub">1 Samuel 17 &middot; Job 41</p>
+    </div>
+
+    <!-- s05/1 : hook -->
+    <div class="slide center doorways">
+      <p>A dragon sleeps on stolen gold under a mountain.</p>
+      <p>A giant shouts his challenge across a valley, forty mornings running.</p>
+      <p>A shadow in black armor fills the doorway.</p>
+      <p class="sub">Every people, every age, every story: the monster waits outside the walls.</p>
+    </div>
+
+    <!-- s05/2 : hook, everywhere -->
+    <div class="slide">
+      <h2>Every culture drew the same beast</h2>
+      <p class="lead">Tiamat in Babylon. The world-serpent in the north. St. George's dragon.
+        The taniwha, the leviathan, the wyrm at the edge of every old map.</p>
+      <p class="sub">And the stories agree on the strangest detail: the monster is always
+        guarding a treasure.</p>
+    </div>
+
+    <!-- s05/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">The dragon is real,<br>and it must be faced, not fed.</p>
+      <p class="sub">This is the sentence of the week.</p>
+    </div>
+
+    <!-- s05/4 : story, anatomy of the monster -->
+    <div class="slide">
+      <h2>The anatomy of a monster</h2>
+      <div class="pairs">
+        <div class="order">It hoards what it cannot enjoy</div>
+        <div class="chaos">Smaug sleeping on a city's stolen gold</div>
+        <div class="order">It devours what it did not make</div>
+        <div class="chaos">The wolf, the giant, the dark lord's armies</div>
+        <div class="order">It taunts, morning and evening</div>
+        <div class="chaos">Goliath, forty days in the valley</div>
+        <div class="order">It grows when appeased</div>
+        <div class="chaos">Every tribute makes the dragon bigger</div>
+      </div>
+      <p class="sub">Chesterton said children already know the dragon exists. What the fairy tale
+        gives them is a St. George who can kill it.</p>
+    </div>
+
+    <!-- s05/5 : story, facing vs feeding -->
+    <div class="slide">
+      <div class="bg"><img src="images/s05-david-runs-illus.jpg"
+        alt="A small figure with a sling running toward a giant silhouette while an army watches" onerror="this.remove()"></div>
+      <h2>Facing, not feeding</h2>
+      <p class="lead">Israel's army heard the taunt for forty days and fed the fear.
+        David heard it once and asked who this uncircumcised Philistine thought he was.</p>
+      <p class="lead">He refused the borrowed armor. He faced his giant with weapons tested in
+        small, unseen battles: the lion, the bear, the sling.</p>
+      <p class="sub">Then the strangest verb in the chapter: David ran toward the battle line.</p>
+    </div>
+
+    <!-- s05/6 : scripture, David -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s05-sling-stones-hero.jpg"
+        alt="Five smooth stones and a shepherd's sling beside a stream" onerror="this.remove()"></div>
+      <blockquote>"David said to the Philistine, 'You come against me with sword and spear and javelin,
+        but I come against you in the name of the LORD Almighty, the God of the armies of Israel,
+        whom you have defied. &hellip; All those gathered here will know that it is not by sword
+        or spear that the LORD saves; for the battle is the LORD's.'"</blockquote>
+      <p class="ref">1 Samuel 17:45, 47 &middot; NIV</p>
+      <p class="sub">Courage is not the absence of fear. It is knowing whose battle this is.</p>
+    </div>
+
+    <!-- s05/7 : scripture, Leviathan -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s05-leviathan-hero.jpg"
+        alt="A colossal sea creature moving beneath a tiny fishing boat in moonlit water" onerror="this.remove()"></div>
+      <blockquote>"Can you pull in Leviathan with a fishhook or tie down its tongue with a rope? &hellip;
+        No one is fierce enough to rouse it. Who then is able to stand against me?"</blockquote>
+      <p class="ref">Job 41:1, 10 &middot; NIV</p>
+      <p class="sub">God's answer to Job includes a monster no human can tame. Some dragons are
+        beyond us; none are beyond him. Chaos is real, and it is on a leash.</p>
+    </div>
+
+    <!-- s05/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>The dragon guards the gold</h2>
+      <p class="lead">Peterson puts the old insight plainly: the monster you avoid grows,
+        and the treasure lies where you least want to look. Voluntary confrontation is the price of the gold.</p>
+      <p class="lead">Pageau supplies the map. Monsters belong at the edges, in the sea, the desert,
+        past the last lamp, because the edge is where order thins out. That is why Leviathan
+        is a sea creature, and why a city wall has always meant more than bricks.</p>
+      <p class="sub">Scripture agrees with both, then goes further: the serpent is not merely
+        a metaphor for our fears. Evil is real, and personal, and sentenced.
+        "He will crush your head, and you will strike his heel." Genesis 3:15.
+        The gospel is the dragon-slaying story that happened.</p>
+    </div>
+
+    <!-- s05/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">Name your Goliath.</p>
+      <p class="lead">What taunts you every morning and every evening? The pattern holds:
+        fed, it grows. Faced in the name of the LORD, it falls.</p>
+      <p class="sub">Start with lions and bears. Small, faithful battles are where slings get trained.</p>
+    </div>
+
+    <!-- s05/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>Dragons, giants, and shadows</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Smaug, Vader, Ganon, the big bad wolf: what makes a monster truly frightening?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do you think the monster in the old stories is always guarding a treasure?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What taunts you on schedule, like Goliath in the valley? What happens when you feed it?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          David rehearsed the lion and the bear before facing the giant. What past faithfulness of God
+          do you need to rehearse right now?</div>
+      </div>
+    </div>
+
+    <!-- s05/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">Face the dragon.<br>The battle is the LORD's.</p>
+      <p class="sub">Next week: The Monster Within</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 05 ============ -->
+
+  <!-- ============================================================
+       SESSION 06 : THE MONSTER WITHIN
+       Anchor: Genesis 4:7; Romans 7 (NIV)
+       ============================================================ -->
+  <section class="session" id="s06">
+
+    <!-- s06/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s06-reflection-hero.jpg"
+        alt="A figure gazing into dark still water where the reflection is subtly wrong" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Six</div>
+      <h2>The Monster Within</h2>
+      <p class="sub">Genesis 4:7 &middot; Romans 7</p>
+    </div>
+
+    <!-- s06/1 : hook -->
+    <div class="slide center doorways">
+      <p>A creature that was once something like a hobbit, whispering to itself.</p>
+      <p>A wooden boy whose nose betrays him with every lie.</p>
+      <p>A wolf wearing Grandma's nightgown.</p>
+      <p class="sub">The most frightening monsters are the ones wearing our own face.</p>
+    </div>
+
+    <!-- s06/2 : hook, Gollum -->
+    <div class="slide">
+      <div class="bg"><img src="images/s06-precious-illus.jpg"
+        alt="Pale long-fingered hands cradling a small gold ring in cave darkness" onerror="this.remove()"></div>
+      <h2>Nobody becomes Gollum overnight</h2>
+      <p class="lead">Smeagol held the ring for five hundred years, one justified compromise at a time,
+        until the possession possessed him and the name wore away.</p>
+      <p class="sub">Tolkien's horror is precise: the monster within does not break down the door.
+        It moves in gradually, and it always calls itself precious.</p>
+    </div>
+
+    <!-- s06/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">The line dividing good and evil cuts<br>through the heart of every human being.</p>
+      <p class="sub">Aleksandr Solzhenitsyn, The Gulag Archipelago. This week's sentence,
+        borrowed from a man who learned it in a prison camp.</p>
+    </div>
+
+    <!-- s06/4 : story, Anakin -->
+    <div class="slide">
+      <div class="bg"><img src="images/s06-black-armor-illus.jpg"
+        alt="The silhouette of a man being enclosed in black armor, one human hand still visible" onerror="this.remove()"></div>
+      <h2>Every Vader was an Anakin first</h2>
+      <p class="lead">Last week's monster outside began as this week's monster within:
+        a frightened heart, protecting itself, one justified step at a time.</p>
+      <p class="lead">The mask is what a face becomes when fear runs it long enough.</p>
+      <p class="sub">Every Gollum was a Smeagol. Every dark lord was once a gifted child.
+        The stories keep warning us: this is a road, not a lightning strike.</p>
+    </div>
+
+    <!-- s06/5 : story, Pinocchio and the wolf -->
+    <div class="slide">
+      <h2>Sin tells on us, and dresses up as home</h2>
+      <p class="lead">Pinocchio's nose: the lie writes itself on the liar. Sin always
+        disfigures the sinner first.</p>
+      <p class="lead">The wolf in Grandma's clothing: temptation rarely looks like a wolf.
+        It looks like comfort, familiarity, something that belongs in the house.</p>
+      <p class="sub">The old stories keep insisting: the danger is not only in the dark wood.
+        It follows you home and learns your voice.</p>
+    </div>
+
+    <!-- s06/6 : scripture, Cain -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s06-crouching-door-hero.jpg"
+        alt="A farmhouse door at night with a predator shape barely visible crouching in the shadows" onerror="this.remove()"></div>
+      <blockquote>"If you do what is right, will you not be accepted? But if you do not do
+        what is right, sin is crouching at your door; it desires to have you,
+        but you must rule over it."</blockquote>
+      <p class="ref">Genesis 4:7 &middot; NIV</p>
+      <p class="sub">God to Cain, moments before the first murder. The Bible's first monster
+        is not a dragon at the world's edge. It is a predator crouched at the door of a human heart.</p>
+    </div>
+
+    <!-- s06/7 : scripture, Paul -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s06-divided-heart-hero.jpg"
+        alt="A man kneeling in a shaft of light while his shadow on the wall takes a bestial shape" onerror="this.remove()"></div>
+      <blockquote>"I do not understand what I do. For what I want to do I do not do,
+        but what I hate I do. &hellip; What a wretched man I am! Who will rescue me from this body
+        that is subject to death? Thanks be to God, who delivers me through Jesus Christ our Lord!"</blockquote>
+      <p class="ref">Romans 7:15, 24&ndash;25 &middot; NIV</p>
+      <p class="sub">That is the apostle Paul, not a beginner. The divided heart is not
+        a phase the mature grow out of. It is the battlefield where grace operates.</p>
+    </div>
+
+    <!-- s06/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>Seeing it is not slaying it</h2>
+      <p class="lead">Peterson is right about the first step: the monster you refuse to see
+        runs your life from the shadows. Honest self-knowledge is not optional.</p>
+      <p class="lead">But Scripture's cure is not managing the monster or making peace with it.
+        It is confession, and a death: the old self crucified with Christ, a new self raised.</p>
+      <p class="sub">You do not tame this monster. You bring it to the One who died for it,
+        and who does not condemn the one who comes. Romans 8:1.</p>
+    </div>
+
+    <!-- s06/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">Even Frodo failed<br>at the crack of doom.</p>
+      <p class="lead">At the very end, the ring won; the quest was completed by grace anyway.
+        Tolkien did that on purpose.</p>
+      <p class="sub">Sin is crouching at your door. Grace is standing at the same door, knocking.
+        Only one of them loves you.</p>
+    </div>
+
+    <!-- s06/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>The wolf in the house</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Gollum, Anakin, Pinocchio: whose fall rings truest to you, and why?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do we love redemption arcs so much, even for the worst villains?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Where is sin "crouching at your door" lately? What does it call itself instead of sin?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Does Romans 7 comfort you or trouble you? What changes when you read Romans 8:1 straight after it?</div>
+      </div>
+    </div>
+
+    <!-- s06/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">The monster within is real.<br>So is the Rescuer.</p>
+      <p class="sub">Next week: Into the Belly of the Beast</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 06 ============ -->
+
+  <!-- ============================================================
+       SESSION 07 : INTO THE BELLY OF THE BEAST
+       Anchor: Jonah 1-2; Matthew 12:39-40 (NIV)
+       ============================================================ -->
+  <section class="session" id="s07">
+
+    <!-- s07/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s07-descent-hero.jpg"
+        alt="A tiny boat sliding down into the open mouth of a great fish beneath a storm sea" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Seven</div>
+      <h2>Into the Belly of the Beast</h2>
+      <p class="sub">Jonah 1&ndash;2 &middot; Matthew 12:39&ndash;40</p>
+    </div>
+
+    <!-- s07/1 : hook -->
+    <div class="slide center doorways">
+      <p>A wooden boy rows into the mouth of a monstrous whale.</p>
+      <p>A grey wizard falls with the shadow, down into the deep places.</p>
+      <p>A prophet is thrown overboard into the storm.</p>
+      <p class="sub">Some roads lead down before they lead anywhere else.</p>
+    </div>
+
+    <!-- s07/2 : hook, nobody chooses it -->
+    <div class="slide">
+      <h2>Nobody signs up for the belly</h2>
+      <p class="lead">You are swallowed, or you fall, or you are thrown.
+        The descent is the one chapter no hero would ever choose.</p>
+      <p class="sub">And yet the old stories agree on the strange part:
+        the way down keeps turning out to be the way through.</p>
+    </div>
+
+    <!-- s07/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">The way down<br>is the way through.</p>
+      <p class="sub">This is the sentence of the week.</p>
+    </div>
+
+    <!-- s07/4 : story, Pinocchio -->
+    <div class="slide">
+      <div class="bg"><img src="images/s07-whale-belly-illus.jpg"
+        alt="Inside the cavernous belly of a whale, lantern light on a small boy and an old man, ribs arching like a cathedral" onerror="this.remove()"></div>
+      <h2>Where wooden boys become real</h2>
+      <p class="lead">Pinocchio enters the whale to rescue his father. Inside the belly,
+        the puppet who lied and ran and chased pleasure finally becomes brave, truthful, and selfless.</p>
+      <p class="sub">Look at the picture: the ribs arch like a cathedral. The belly is where
+        the wooden parts of us start becoming real.</p>
+    </div>
+
+    <!-- s07/5 : story, Gandalf -->
+    <div class="slide">
+      <div class="bg"><img src="images/s07-bridge-abyss-illus.jpg"
+        alt="A grey figure with a staff on a narrow stone bridge facing a vast form of shadow and flame" onerror="this.remove()"></div>
+      <h2>Grey goes down. White comes back.</h2>
+      <p class="lead">Gandalf falls fighting the shadow, through fire and water,
+        to the deep places of the world, and is given back changed: greater, brighter, no longer grey.</p>
+      <p class="sub">Death and return is the hinge of the whole story,
+        and Tolkien knew exactly whose story he was echoing.</p>
+    </div>
+
+    <!-- s07/6 : scripture, Jonah -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s07-jonah-deep-hero.jpg"
+        alt="A man sinking through deep dark water, seaweed around him, light far above" onerror="this.remove()"></div>
+      <blockquote>"From inside the fish Jonah prayed to the LORD his God. He said:
+        'In my distress I called to the LORD, and he answered me. From deep in the realm of the dead
+        I called for help, and you listened to my cry. &hellip; To the roots of the mountains I sank down;
+        the earth beneath barred me in forever. But you, LORD my God, brought my life up from the pit.'"</blockquote>
+      <p class="ref">Jonah 2:1&ndash;2, 6 &middot; NIV</p>
+      <p class="sub">Notice where Jonah finally prays: not on the boat, not on the beach.
+        Rock bottom has strange acoustics. Prayers travel well from there.</p>
+    </div>
+
+    <!-- s07/7 : scripture, the sign of Jonah -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s07-sealed-tomb-hero.jpg"
+        alt="A sealed stone tomb at night with faint light beginning at its seams" onerror="this.remove()"></div>
+      <blockquote>"He answered, 'A wicked and adulterous generation asks for a sign! But none will be
+        given it except the sign of the prophet Jonah. For as Jonah was three days and three nights
+        in the belly of a huge fish, so the Son of Man will be three days and three nights
+        in the heart of the earth.'"</blockquote>
+      <p class="ref">Matthew 12:39&ndash;40 &middot; NIV</p>
+      <p class="sub">Jesus reads Jonah the way this class reads stories: as pattern.
+        Then he aims the pattern at himself. The descent has a name and a date.</p>
+    </div>
+
+    <!-- s07/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>You have already been in the belly</h2>
+      <p class="lead">Peterson: every rebirth in myth passes through a descent, and the treasure waits
+        at the bottom of the abyss. Pageau: creation itself runs the pattern, seeds buried before they
+        bear, winter before spring, night before morning. Neither of them needs correcting here.
+        The world was built to teach this.</p>
+      <p class="lead">Paul says the pattern was enacted on you: "We were therefore buried with him
+        through baptism into death in order that, just as Christ was raised from the dead through
+        the glory of the Father, we too may live a new life." Romans 6:4</p>
+      <p class="sub">Every baptism is a belly-of-the-beast story with a happy ending.</p>
+    </div>
+
+    <!-- s07/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">Are you in the belly right now?</p>
+      <p class="lead">Then hear the pattern's promise: this is not the end of your story.
+        The belly is where prayer starts working, and where the wooden parts of us begin to become real.</p>
+      <p class="sub">And you do not come up merely rescued. You come up changed.</p>
+    </div>
+
+    <!-- s07/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>The way down</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Why do so many heroes have to fall, or nearly die, before the story can end well?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Which descent and return moves you most: Gandalf, Pinocchio, Jonah? Why that one?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Jonah prayed from the fish, not from the boat. Why does it so often take the belly?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What did a season at the bottom change in you that comfort never could have?</div>
+      </div>
+    </div>
+
+    <!-- s07/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">The way down is the way through,<br>because Someone went down first.</p>
+      <p class="sub">Next week: The Life Laid Down</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 07 ============ -->
+
+  <!-- ============================================================
+       SESSION 08 : THE LIFE LAID DOWN
+       Anchor: Isaiah 53; John 10:11-18; John 15:13 (NIV)
+       The summit of the course's middle act. See GUIDANCE.md section 4.
+       ============================================================ -->
+  <section class="session" id="s08">
+
+    <!-- s08/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s08-stone-table-hero.jpg"
+        alt="A great lion walking alone toward a stone table on a hill under night sky" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Eight</div>
+      <h2>The Life Laid Down</h2>
+      <p class="sub">Isaiah 53 &middot; John 10:11&ndash;18 &middot; John 15:13</p>
+    </div>
+
+    <!-- s08/1 : hook -->
+    <div class="slide center doorways">
+      <p>An old knight raises his blade, then lowers it, and lets the blow fall.</p>
+      <p>A great lion walks alone up the hill to a table of stone.</p>
+      <p>A boy walks into the forest to die, turning a small stone over in his pocket.</p>
+      <p class="sub">The oldest twist in storytelling: the hero wins by dying.</p>
+    </div>
+
+    <!-- s08/2 : hook, the walk -->
+    <div class="slide">
+      <div class="bg"><img src="images/s08-forest-walk-illus.jpg"
+        alt="A lone boy walking into a dark forest, a faint glowing stone in his open palm" onerror="this.remove()"></div>
+      <h2>The bravest scenes are walks</h2>
+      <p class="lead">Not the duels. Not the battles. The walks: a lion's slow walk up the hill,
+        a boy's steady walk into the trees, when running away is still possible and nobody would blame them.</p>
+      <p class="sub">Where did storytellers learn that shape? There was once a walk
+        up a hill outside Jerusalem.</p>
+    </div>
+
+    <!-- s08/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">"No one takes it from me,<br>but I lay it down of my own accord."</p>
+      <p class="sub">John 10:18. This week the sentence is Scripture itself,
+        and it is the keystone of the whole course.</p>
+    </div>
+
+    <!-- s08/4 : story, Aslan -->
+    <div class="slide">
+      <h2>The table cracks</h2>
+      <p class="lead">Lewis wrote Narnia as a supposal: suppose the Son of God had a world like that one;
+        what might he do there? So a great lion offers himself in a traitor's place,
+        is bound, shorn, and killed on the table of the old law.</p>
+      <p class="lead">And then morning comes, and a deeper magic from before the dawn of time,
+        and the table cracks from end to end.</p>
+      <p class="sub">Every child who ever wept at that chapter was being catechized, and Lewis knew it.</p>
+    </div>
+
+    <!-- s08/5 : story, the others -->
+    <div class="slide">
+      <div class="bg"><img src="images/s08-blade-lowered-illus.jpg"
+        alt="An old knight's silhouette lowering a luminous blade before a towering dark figure" onerror="this.remove()"></div>
+      <h2>Sacrifice is the strongest move on the board</h2>
+      <p class="lead">Obi-Wan lowers his blade so the boy can escape, and becomes more than he was.
+        Harry walks to his death, and his willing sacrifice shields everyone he left behind.</p>
+      <p class="lead">And Vader: the monster of sessions five and six is not defeated by a better
+        swordsman. He is brought back to life by a son who would rather die than stop loving him.</p>
+      <p class="sub">The pattern insists: laying your life down is not losing. It is the one move
+        the darkness has no answer for.</p>
+    </div>
+
+    <!-- s08/6 : scripture, Isaiah -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s08-man-of-sorrows-hero.jpg"
+        alt="A solitary man bowed under a heavy beam on a hill path at dusk" onerror="this.remove()"></div>
+      <blockquote>"Surely he took up our pain and bore our suffering, yet we considered him punished by God,
+        stricken by him, and afflicted. But he was pierced for our transgressions, he was crushed for our
+        iniquities; the punishment that brought us peace was on him, and by his wounds we are healed.
+        We all, like sheep, have gone astray, each of us has turned to our own way;
+        and the LORD has laid on him the iniquity of us all."</blockquote>
+      <p class="ref">Isaiah 53:4&ndash;6 &middot; NIV</p>
+      <p class="sub">Written seven centuries before the cross. The suffering servant is the blueprint
+        every sacrificial hero has been tracing ever since.</p>
+    </div>
+
+    <!-- s08/7 : scripture, John 10 -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s08-shepherd-hero.jpg"
+        alt="A shepherd standing between his flock and a wolf shape in the dark, staff planted" onerror="this.remove()"></div>
+      <blockquote>"I am the good shepherd. The good shepherd lays down his life for the sheep. &hellip;
+        No one takes it from me, but I lay it down of my own accord. I have authority to lay it down
+        and authority to take it up again."</blockquote>
+      <p class="ref">John 10:11, 18 &middot; NIV</p>
+      <p class="sub">Not a victim. A volunteer. The cross was not something that happened to Jesus.
+        It was something he did.</p>
+    </div>
+
+    <!-- s08/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>The archetype happened</h2>
+      <p class="lead">Peterson calls sacrifice humanity's deepest discovery: the future can be bargained
+        with; give up what you love now for what is greater later. The highest form, he says,
+        is the self offered for others. He is describing, in psychological language, the shape of the cross.</p>
+      <p class="lead">But the gospel refuses to stay a shape. Pierced hands. A borrowed tomb.
+        A dated Roman execution under a named governor. And on the third day, the sign of Jonah completed.</p>
+      <p class="sub">Every other sacrifice story is the pattern dreamed. This one is the pattern
+        entering history and leaving evidence. The archetype happened.
+        That is the scandal, and the glory.</p>
+    </div>
+
+    <!-- s08/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">"Greater love has no one than this:<br>
+        to lay down one's life for one's friends."</p>
+      <p class="lead">John 15:13. And the laid-down life is not only his gift to you;
+        it is his shape for you: the daily small deaths of forgiving, serving,
+        going last, giving up the final word.</p>
+      <p class="sub">Take up your cross daily, he said. The pattern is now yours to trace.</p>
+    </div>
+
+    <!-- s08/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>The one move darkness cannot answer</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Which sacrifice scene hits you hardest: Aslan, Obi-Wan, Harry, Vader's rescue? Why that one?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do these endings satisfy us like nothing else does?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          "No one takes it from me." What changes when you see the cross as voluntary rather than tragic?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What small death is love asking of you this week: an apology, a habit, the last word?</div>
+      </div>
+    </div>
+
+    <!-- s08/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">No one took his life.<br>He laid it down, for you.</p>
+      <p class="sub">Next week: The Least Likely One</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 08 ============ -->
+
+  <!-- ============================================================
+       SESSION 09 : THE LEAST LIKELY ONE
+       Anchor: 1 Samuel 16:7; 1 Corinthians 1:26-29 (NIV)
+       ============================================================ -->
+  <section class="session" id="s09">
+
+    <!-- s09/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s09-hall-light-hero.jpg"
+        alt="A small plain figure in a great hall of tall impressive silhouettes, the light falling on the small one" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Nine</div>
+      <h2>The Least Likely One</h2>
+      <p class="sub">1 Samuel 16:7 &middot; 1 Corinthians 1:26&ndash;29</p>
+    </div>
+
+    <!-- s09/1 : hook -->
+    <div class="slide center doorways">
+      <p>The youngest of three brothers, sent last, armed only with kindness.</p>
+      <p>A cinder-girl the invitation forgot.</p>
+      <p>A gardener who carries his master up the mountain.</p>
+      <p class="sub">The old stories keep picking the one nobody picked.</p>
+    </div>
+
+    <!-- s09/2 : hook, Grimm's rule -->
+    <div class="slide">
+      <h2>The fairy tales are unanimous</h2>
+      <p class="lead">In tale after tale, the two eldest brothers are strong, clever, impressive,
+        and they fail. The youngest, the simpleton, the kind one, wins the kingdom.</p>
+      <p class="sub">Why would every culture's stories keep wasting their crowns on fools,
+        cinder-girls, and boys in green from small villages?</p>
+    </div>
+
+    <!-- s09/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">The story always chooses<br>the one nobody chose.</p>
+      <p class="sub">This is the sentence of the week.</p>
+    </div>
+
+    <!-- s09/4 : story, Sam -->
+    <div class="slide">
+      <div class="bg"><img src="images/s09-sam-carry-illus.jpg"
+        alt="One small figure carrying another up a fiery mountain slope" onerror="this.remove()"></div>
+      <h2>Tolkien's real hero is the gardener</h2>
+      <p class="lead">Frodo bears the ring, but Tolkien named Sam the chief hero of his book.
+        A servant whose weapons are loyalty, plain sense, and hope.</p>
+      <p class="lead">"I can't carry it for you, but I can carry you."</p>
+      <p class="sub">The greatest deed in Middle-earth is a piggyback ride, performed by a gardener.</p>
+    </div>
+
+    <!-- s09/5 : story, the line-up -->
+    <div class="slide">
+      <div class="bg"><img src="images/s09-anointing-illus.jpg"
+        alt="Seven tall sons in a line while an old prophet looks past them to a shepherd boy in the doorway" onerror="this.remove()"></div>
+      <h2>Seven brothers pass. The eighth is with the sheep.</h2>
+      <p class="lead">Jesse parades his impressive sons before the prophet, tallest first.
+        The one God chose was not even invited into the house.</p>
+      <p class="sub">The pattern was old when Bethlehem was young, and it has not aged since:
+        a boy in green from a small village still saves the kingdom, every generation.</p>
+    </div>
+
+    <!-- s09/6 : scripture, 1 Samuel -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s09-crown-staff-hero.jpg"
+        alt="An ornate crown on a table beside a plain shepherd's staff in lamplight" onerror="this.remove()"></div>
+      <blockquote>"But the LORD said to Samuel, 'Do not consider his appearance or his height,
+        for I have rejected him. The LORD does not look at the things people look at.
+        People look at the outward appearance, but the LORD looks at the heart.'"</blockquote>
+      <p class="ref">1 Samuel 16:7 &middot; NIV</p>
+      <p class="sub">Samuel was a prophet holding the anointing oil, and he still nearly crowned
+        the wrong son. Even prophets need the reminder.</p>
+    </div>
+
+    <!-- s09/7 : scripture, 1 Corinthians -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s09-called-hero.jpg"
+        alt="A gathering of ordinary silhouettes lit gold against a grand dark backdrop" onerror="this.remove()"></div>
+      <blockquote>"Brothers and sisters, think of what you were when you were called.
+        Not many of you were wise by human standards; not many were influential;
+        not many were of noble birth. But God chose the foolish things of the world to shame the wise;
+        God chose the weak things of the world to shame the strong."</blockquote>
+      <p class="ref">1 Corinthians 1:26&ndash;27 &middot; NIV</p>
+      <p class="sub">Paul continues: God chose the lowly and despised things, so that no one may boast
+        before him. The fairy-tale rule turns out to be church membership policy.</p>
+    </div>
+
+    <!-- s09/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>Why the least likely?</h2>
+      <p class="lead">Because what is full of itself has no room for grace. The impressive brothers
+        fail in the tales for the same reason the Pharisee fails in the parable:
+        self-sufficiency is the one disqualification.</p>
+      <p class="lead">Pageau notices where these people are standing. The youngest son, the fool,
+        the widow, the leper: every one of them lives at the margin, and Scripture keeps moving
+        the margin to the center. The stone the builders rejected did not stay in the ditch.</p>
+      <p class="sub">"My grace is sufficient for you, for my power is made perfect in weakness."
+        2 Corinthians 12:9. God's preference for the overlooked is not sentimentality;
+        it is where his strength shows undiluted. And the pattern's summit: the King himself came
+        from Nazareth, born in the least of the clans of Judah, despised and rejected.
+        The Least Likely One was the Hero all along.</p>
+    </div>
+
+    <!-- s09/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">You are not disqualified.</p>
+      <p class="lead">Whatever you think rules you out (your age, your past, your obscurity,
+        your ordinariness) is precisely the material God prefers to work with.</p>
+      <p class="sub">The question is never whether you are impressive. It is whether you are willing.</p>
+    </div>
+
+    <!-- s09/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>The overlooked ones</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Who is your favorite least-likely hero, and why do we cheer so hard for them?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do the impressive elder brothers always fail in the fairy tales?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What do you secretly believe disqualifies you? What does 1 Corinthians 1 do to that belief?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Who around you have you been overlooking that God might be seeing?</div>
+      </div>
+    </div>
+
+    <!-- s09/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">The one nobody chose<br>is the one God chooses.</p>
+      <p class="sub">Next week: The Return of the King</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 09 ============ -->
+
+  <!-- ============================================================
+       SESSION 10 : THE RETURN OF THE KING
+       Anchor: Isaiah 9:6-7; Revelation 21 (NIV)
+       ============================================================ -->
+  <section class="session" id="s10">
+
+    <!-- s10/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s10-return-hero.jpg"
+        alt="A distant king riding toward a white city at dawn with light breaking over the mountains" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Ten</div>
+      <h2>The Return of the King</h2>
+      <p class="sub">Isaiah 9:6&ndash;7 &middot; Revelation 21</p>
+    </div>
+
+    <!-- s10/1 : hook -->
+    <div class="slide center doorways">
+      <p>"The hands of the king are the hands of a healer."</p>
+      <p>A throne kept empty for a thousand years, while stewards keep a fading watch.</p>
+      <p>Fireworks over a forest moon as an empire falls.</p>
+      <p class="sub">Every long story leans toward the same ending: the rightful king comes home.</p>
+    </div>
+
+    <!-- s10/2 : hook, Sam's question -->
+    <div class="slide">
+      <h2>"Is everything sad going to come untrue?"</h2>
+      <p class="lead">Sam's question, asked through tears when he wakes and finds Gandalf alive.
+        It is the secret engine of every great ending ever written.</p>
+      <p class="sub">Tolkien coined a word for that ending: eucatastrophe,
+        the sudden joyous turn no one dared hope for.</p>
+    </div>
+
+    <!-- s10/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">Every true story ends<br>with the King coming home.</p>
+      <p class="sub">This is the sentence of the week.</p>
+    </div>
+
+    <!-- s10/4 : story, stewards -->
+    <div class="slide">
+      <div class="bg"><img src="images/s10-steward-illus.jpg"
+        alt="An empty throne on a dais with a steward's plain chair at its foot in torchlight" onerror="this.remove()"></div>
+      <h2>The world is stewarded, not ownerless</h2>
+      <p class="lead">Gondor kept the throne empty for a thousand years. Stewards ruled,
+        but never sat the seat; the watch was kept for an owner who would return.</p>
+      <p class="lead">And when the king comes, the sign of his kingship is not conquest but healing:
+        the hands of the king are the hands of a healer.</p>
+      <p class="sub">Broken things mend when the rightful one returns. Our world too is groaning
+        and waiting; the stewards are us.</p>
+    </div>
+
+    <!-- s10/5 : story, the joyous turn -->
+    <div class="slide">
+      <div class="bg"><img src="images/s10-joyous-turn-illus.jpg"
+        alt="Great winged shapes descending through breaking storm light toward a besieged dark field" onerror="this.remove()"></div>
+      <h2>At the darkest hour, help arrives</h2>
+      <p class="lead">The eagles come. Dawn breaks over the fortress on the third morning.
+        The Emperor's throne room shakes, and the Empire falls.</p>
+      <p class="sub">We keep writing this ending because we cannot help it. Hope is load-bearing
+        in the human heart, and the heart was built that way on purpose.</p>
+    </div>
+
+    <!-- s10/6 : scripture, Isaiah -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s10-child-throne-hero.jpg"
+        alt="A humble manger in the foreground with a great throne rising in light beyond it" onerror="this.remove()"></div>
+      <blockquote>"For to us a child is born, to us a son is given, and the government will be
+        on his shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father,
+        Prince of Peace. Of the greatness of his government and peace there will be no end.
+        He will reign on David's throne and over his kingdom, establishing and upholding it
+        with justice and righteousness from that time on and forever."</blockquote>
+      <p class="ref">Isaiah 9:6&ndash;7 &middot; NIV</p>
+      <p class="sub">The King arrives as a child. The coronation begins in a manger,
+        in the least likely town, to the least likely family. Week nine was the setup all along.</p>
+    </div>
+
+    <!-- s10/7 : scripture, Revelation -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s10-new-city-hero.jpg"
+        alt="A radiant city descending through clouds toward a renewed green earth at dawn" onerror="this.remove()"></div>
+      <blockquote>"'He will wipe every tear from their eyes. There will be no more death'
+        or mourning or crying or pain, for the old order of things has passed away.
+        He who was seated on the throne said, 'I am making everything new!'"</blockquote>
+      <p class="ref">Revelation 21:4&ndash;5 &middot; NIV</p>
+      <p class="sub">Sam's question, answered from the throne: yes.
+        Everything sad is going to come untrue.</p>
+    </div>
+
+    <!-- s10/8 : go deeper -->
+    <div class="slide">
+      <p class="s-kicker">Go Deeper</p>
+      <h2>Living between the landings</h2>
+      <p class="lead">The King has come: a manger, a cross, an empty tomb. The King reigns now,
+        hidden the way Aragorn was hidden among the Rangers: recognized by some, unseen by most.
+        And the King will come again, revealed.</p>
+      <p class="lead">Pageau reads kingship as the joining of heaven and earth: the true king is the one
+        through whom what is above comes to rest on what is below. Which is why the last picture
+        in the Bible is not our escape upward. It is a city coming down.</p>
+      <p class="sub">The old analogy still serves: the decisive battle has been won,
+        the final victory is certain, and the fighting in between is real.
+        Christian hope is not optimism. It is memory pointed forward.</p>
+    </div>
+
+    <!-- s10/9 : the landing -->
+    <div class="slide center">
+      <p class="statement">Live like the King<br>is coming back.</p>
+      <p class="lead">Stewards keep the lights on. They tend the garden, guard the gate,
+        heal what they can reach, and keep the throne's claim alive in a forgetful land.</p>
+      <p class="sub">Maranatha: the church's oldest one-word prayer. Come, Lord.</p>
+    </div>
+
+    <!-- s10/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>The ending we cannot stop writing</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          What is your favorite "everything sad comes untrue" ending, and what does it do to you?</div>
+        <div class="q"><span class="tag">Starter</span>
+          Why do the happy endings of great stories not feel cheap, when so many happy endings do?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Revelation 21: which tear are you most waiting to have wiped away?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What would you do differently this month if you lived like a steward expecting the King?</div>
+      </div>
+    </div>
+
+    <!-- s10/11 : take-home -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">Everything sad<br>is going to come untrue.</p>
+      <p class="sub">Next week: Living Inside the Story (our final session)</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 10 ============ -->
+
+  <!-- ============================================================
+       SESSION 11 : LIVING INSIDE THE STORY
+       Anchor: Hebrews 12:1-2; Ephesians 2:10 (NIV)
+       Final session: recap and commissioning.
+       ============================================================ -->
+  <section class="session" id="s11">
+
+    <!-- s11/0 : title -->
+    <div class="slide center">
+      <div class="bg"><img src="images/s11-open-door-hero.jpg"
+        alt="An open door in a dark room with brilliant warm light pouring through" onerror="this.remove()"></div>
+      <div class="s-kicker">Session Eleven &middot; The Final Session</div>
+      <h2>Living Inside the Story</h2>
+      <p class="sub">Hebrews 12:1&ndash;2 &middot; Ephesians 2:10</p>
+    </div>
+
+    <!-- s11/1 : hook -->
+    <div class="slide center doorways">
+      <p>"I wonder what sort of a tale we've fallen into?"</p>
+      <p>"There are far, far better things ahead than any we leave behind."</p>
+      <p>"For we are God's handiwork."</p>
+      <p class="sub">Ten weeks of other people's stories. One question left: what about yours?</p>
+    </div>
+
+    <!-- s11/2 : the map -->
+    <div class="slide">
+      <p class="s-kicker">The Map You Now Carry</p>
+      <h2>Ten sentences, ten weeks</h2>
+      <div class="qlist" style="margin-top:2vh">
+        <div class="q" style="font-size:clamp(14px,1.5vw,19px);margin:1vh 0">
+          Reality has a shape, and every true story traces it. &middot;
+          Stories endure when they tell the truth about how the world really is. &middot;
+          The hero is not the one who is ready; the hero is the one who goes. &middot;
+          Wisdom equips you for a road it cannot walk for you. &middot;
+          The dragon is real, and it must be faced, not fed.</div>
+        <div class="q" style="font-size:clamp(14px,1.5vw,19px);margin:1vh 0">
+          The line dividing good and evil cuts through every human heart. &middot;
+          The way down is the way through. &middot;
+          No one takes it from me; I lay it down of my own accord. &middot;
+          The story always chooses the one nobody chose. &middot;
+          Every true story ends with the King coming home.</div>
+      </div>
+    </div>
+
+    <!-- s11/3 : the pattern -->
+    <div class="slide center">
+      <p class="s-kicker">The Pattern</p>
+      <p class="statement">You are in the story now.</p>
+      <p class="sub">The eleventh sentence is about you.</p>
+    </div>
+
+    <!-- s11/4 : story, your casting -->
+    <div class="slide">
+      <h2>The course, addressed to you</h2>
+      <div class="pairs">
+        <div class="order">You have a call</div>
+        <div class="chaos">And the promise: I will be with you</div>
+        <div class="order">You have a Mentor who stays</div>
+        <div class="chaos">And Elis and Timothys on either side of you</div>
+        <div class="order">You have dragons, without and within</div>
+        <div class="chaos">And a battle that belongs to the LORD</div>
+        <div class="order">You will pass through bellies</div>
+        <div class="chaos">And come up changed, not just rescued</div>
+        <div class="order">You follow a King who laid his life down</div>
+        <div class="chaos">And who is coming back for the world</div>
+      </div>
+    </div>
+
+    <!-- s11/5 : story, the cloud -->
+    <div class="slide">
+      <div class="bg"><img src="images/s11-cloud-witnesses-illus.jpg"
+        alt="A runner on a dawn road surrounded by a vast crowd of luminous witnesses" onerror="this.remove()"></div>
+      <h2>The heroes are not statues. They are a stadium.</h2>
+      <p class="lead">Abraham who went, Moses who argued and went anyway, David the overlooked,
+        Samuel who learned to listen, and every Lois and Eunice since,
+        including some who taught the people in this room.</p>
+      <p class="sub">Scripture calls them a great cloud of witnesses, and they are on their feet.</p>
+    </div>
+
+    <!-- s11/6 : scripture, Hebrews -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s11-race-dawn-hero.jpg"
+        alt="A long road at sunrise stretching toward a distant radiance" onerror="this.remove()"></div>
+      <blockquote>"Therefore, since we are surrounded by such a great cloud of witnesses,
+        let us throw off everything that hinders and the sin that so easily entangles.
+        And let us run with perseverance the race marked out for us, fixing our eyes on Jesus,
+        the pioneer and perfecter of faith."</blockquote>
+      <p class="ref">Hebrews 12:1&ndash;2 &middot; NIV</p>
+      <p class="sub">A race marked out for us: your course is real, it is yours,
+        and the one who ran first is watching from the finish.</p>
+    </div>
+
+    <!-- s11/7 : scripture, Ephesians -->
+    <div class="slide scripture">
+      <div class="bg"><img src="images/s11-handiwork-hero.jpg"
+        alt="A glowing manuscript page where a small figure walks along the written lines" onerror="this.remove()"></div>
+      <blockquote>"For we are God's handiwork, created in Christ Jesus to do good works,
+        which God prepared in advance for us to do."</blockquote>
+      <p class="ref">Ephesians 2:10 &middot; NIV</p>
+      <p class="sub">Paul's word for handiwork is poiema, the root of our word poem.
+        You are God's poem, written into his story, with works prepared in advance:
+        a plot, waiting for you to walk it.</p>
+    </div>
+
+    <!-- s11/8 : go deeper -->
+    <div class="slide">
+      <div class="bg"><img src="images/s11-authors-page-illus.jpg"
+        alt="An open book on a hilltop whose pages become the landscape, a road running from the page toward a bright city" onerror="this.remove()"></div>
+      <p class="s-kicker">Go Deeper</p>
+      <h2>The Author stepped onto the page</h2>
+      <p class="lead">Look back down the course and see one figure walking through every session:
+        the Logos who shaped the world, the myth that became fact, the one who answered the call,
+        who faced the tempter, who went down into the heart of the earth,
+        who laid down his life, who came from Nazareth of all places,
+        and who is coming back as King.</p>
+      <p class="lead">Every archetype we studied was his silhouette. Not because Scripture borrowed
+        the shapes, but because he made the world that keeps producing them,
+        and then walked into it himself, at an address, on a date.</p>
+      <p class="sub">And by union with Christ, his story becomes yours: his death your death,
+        his life your life, his ending your ending.</p>
+    </div>
+
+    <!-- s11/9 : the landing, commissioning -->
+    <div class="slide center">
+      <p class="statement">Go live a good chapter.</p>
+      <p class="lead">Read Scripture as the revelation of reality. Watch stories with your eyes open.
+        Answer your call. Face your dragons. Sit with someone in the belly.
+        Mentor a Samuel. Watch for the King.</p>
+      <p class="sub">The class ends tonight. The story does not.</p>
+    </div>
+
+    <!-- s11/10 : discussion -->
+    <div class="slide">
+      <p class="s-kicker">Talk It Through</p>
+      <h2>One last time</h2>
+      <div class="qlist">
+        <div class="q"><span class="tag">Starter</span>
+          Which week changed how you watch movies? Which sentence stuck the deepest?</div>
+        <div class="q"><span class="tag">Starter</span>
+          What story will you never see the same way again?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          Name the chapter God is writing in your life right now, in course language:
+          a call, a belly, a dragon, a stewardship?</div>
+        <div class="q"><span class="tag">Deeper</span>
+          What good work "prepared in advance" might be sitting in front of you this month?</div>
+      </div>
+    </div>
+
+    <!-- s11/11 : take-home, finale -->
+    <div class="slide center">
+      <p class="s-kicker">Take It Home</p>
+      <p class="statement">You are in the story now,<br>and the Author knows your name.</p>
+      <p class="sub">Heroes, Mentors, and Monsters &middot; "The light shines in the darkness,
+        and the darkness has not overcome it."</p>
+    </div>
+
+  </section>
+  <!-- ============ END SESSION 11 ============ -->
+
+</div>
+
+<script>
+/* ================================================================
+   COURSE DATA : drives the home screen tiles.
+   built:true means a matching <section class="session" id="sNN"> exists.
+   ================================================================ */
+const COURSE = [
+  {id:"s01", n:"I",    title:"The World Has a Shape",     sub:"Reality has a God-given structure. Genesis 1; John 1:1-5.", built:true},
+  {id:"s02", n:"II",   title:"Why Stories Ring True",     sub:"Archetypes, and the day the pattern entered history.", built:true},
+  {id:"s03", n:"III",  title:"The Call of the Hero",      sub:"Abram, Moses, David. Leaving home for the unknown.", built:true},
+  {id:"s04", n:"IV",   title:"The Mentor",                sub:"The guide who cannot walk the road for you.", built:true},
+  {id:"s05", n:"V",    title:"The Monster Outside",       sub:"Dragons, giants, and the chaos at the border.", built:true},
+  {id:"s06", n:"VI",   title:"The Monster Within",        sub:"Sin crouching at the door; the divided heart.", built:true},
+  {id:"s07", n:"VII",  title:"Into the Belly of the Beast", sub:"Descent before rising. Jonah's three days.", built:true},
+  {id:"s08", n:"VIII", title:"The Life Laid Down",        sub:"Voluntary sacrifice and redemption. Isaiah 53; John 10.", built:true},
+  {id:"s09", n:"IX",   title:"The Least Likely One",      sub:"The fool, the youngest son, the overlooked.", built:true},
+  {id:"s10", n:"X",    title:"The Return of the King",    sub:"Restoration, and the world set right.", built:true},
+  {id:"s11", n:"XI",   title:"Living Inside the Story",   sub:"We are in the story now. Christ the true Hero.", built:true},
+];
+
+/* ================================================================
+   NAVIGATION ENGINE
+   Hash routes:  ""  -> home,  "#s01/4" -> session s01, slide index 4
+   ================================================================ */
+const body = document.body;
+const tilesEl = document.getElementById("tiles");
+const progressEl = document.getElementById("progress");
+const labelEl = document.getElementById("session-label");
+let cur = {session:null, slide:0};
+
+function buildTiles(){
+  COURSE.forEach((s, i) => {
+    const t = document.createElement("div");
+    t.className = "tile" + (s.built ? "" : " coming");
+    const num = String(i+1).padStart(2,"0");
+    t.innerHTML =
+      '<div class="tile-art"><img src="images/s'+num+'-'+slug(s.title)+'-tile.jpg" alt="" onerror="this.remove()"></div>' +
+      '<div class="num">'+s.n+'</div>' +
+      (s.built ? "" : '<div class="badge">Coming</div>') +
+      '<div class="t-body"><h3>'+s.title+'</h3><p>'+s.sub+'</p></div>';
+    if(s.built){ t.addEventListener("click", () => { location.hash = s.id + "/0"; }); }
+    tilesEl.appendChild(t);
+  });
+}
+function slug(title){
+  return title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
+
+function slidesOf(sessionId){
+  const sec = document.getElementById(sessionId);
+  return sec ? sec.querySelectorAll(".slide") : [];
+}
+
+function render(){
+  const h = location.hash.replace(/^#/,"");
+  const m = h.match(/^(s\d\d)\/(\d+)$/);
+  if(!m || !document.getElementById(m[1])){
+    body.classList.remove("playing");
+    cur = {session:null, slide:0};
+    return;
+  }
+  const [ , sid, idxStr ] = m;
+  const slides = slidesOf(sid);
+  let idx = Math.min(Math.max(parseInt(idxStr,10)||0,0), slides.length-1);
+
+  body.classList.add("playing");
+  document.querySelectorAll(".session").forEach(s => s.classList.toggle("active", s.id===sid));
+  slides.forEach((sl,i) => sl.classList.toggle("current", i===idx));
+  const meta = COURSE.find(c => c.id===sid);
+  labelEl.textContent = meta ? meta.title : "";
+  progressEl.textContent = (idx+1) + " / " + slides.length;
+  cur = {session:sid, slide:idx};
+}
+
+function step(delta){
+  if(!cur.session) return;
+  const slides = slidesOf(cur.session);
+  const next = cur.slide + delta;
+  if(next < 0){ return; }
+  if(next >= slides.length){ goHome(); return; }
+  location.hash = cur.session + "/" + next;
+}
+function goHome(){
+  history.pushState("", document.title, location.pathname + location.search);
+  render();
+}
+
+document.getElementById("next").addEventListener("click", e => { e.stopPropagation(); step(1); });
+document.getElementById("prev").addEventListener("click", e => { e.stopPropagation(); step(-1); });
+document.getElementById("btn-home").addEventListener("click", e => { e.stopPropagation(); goHome(); });
+document.getElementById("player").addEventListener("click", e => {
+  if(e.target.closest(".chrome")) return;
+  step(1);
+});
+document.addEventListener("keydown", e => {
+  if(!body.classList.contains("playing")) return;
+  if(e.key==="ArrowRight" || e.key===" " || e.key==="PageDown"){ e.preventDefault(); step(1); }
+  else if(e.key==="ArrowLeft" || e.key==="PageUp"){ e.preventDefault(); step(-1); }
+  else if(e.key==="Escape"){ goHome(); }
+});
+window.addEventListener("hashchange", render);
+
+buildTiles();
+render();
+</script>
+</body>
+</html>
