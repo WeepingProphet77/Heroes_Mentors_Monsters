@@ -89,16 +89,17 @@ Wide-format artwork for the chapter-select menu. Keep each one simple and iconic
 - [x] `s02-empty-tomb-dawn-illus.jpg` — "Myth became fact."
   *A garden tomb cut into rock, the round stone rolled aside, gold dawn light spilling out of the opening into a grey-blue garden. No figures. The light does the preaching. Public-domain scriptural scene; render freely.*
 
-- [x] `s02-struck-bell-illus.jpg` — Session 2, slide 7, "So the Bible just copied the older myths?"
+- [x] `s02-struck-bell-illus.jpg` — Session 2, slide 12, "Pattern is not the opposite of history."
   *A great weathered bronze bell hanging in a dark valley at night, caught at the instant of being struck, with rings of warm golden light spreading outward across the hills in every direction, near and far. The rings should read as one source producing many echoes. No figures, no text, no visible ringer. This image carries the course's central argument: an echo does not create the sound.*
 
-- [x] `s02-two-floods-illus.jpg` — Session 2, slide 8, "Same waters. A different God." (delivered 20 August 2026)
+- [x] `s02-two-floods-illus.jpg` — Session 2, slide 13, "Same waters. A different God." (delivered 20 August 2026)
 
-  **What the slide argues, so the picture can carry it.** The class has just been told that
-  nearly every culture on earth remembers a great flood, and that Genesis is not one more entry
-  in that pile but God's own account of the event the rest of the world half remembers. This
-  image has to show *one* catastrophe understood two ways. If it reads as two different floods,
-  it argues the opposite of the slide.
+  **What the slide argues, so the picture can carry it.** The slide concedes that nearly every
+  culture on earth remembers a great flood and that the Gilgamesh tablets are older than Moses,
+  then turns on what the accounts actually say: Genesis is not one more entry in the pile but
+  God's own account of the event the rest of the world half remembers. This image has to show
+  *one* catastrophe understood two ways. If it reads as two different floods, it argues the
+  opposite of the slide.
 
   **Art direction.** A single rain-dark deluge rendered as one continuous scene but read two
   ways across the frame. On the left, above churning grey water, the suggestion of capricious
@@ -124,7 +125,7 @@ Wide-format artwork for the chapter-select menu. Keep each one simple and iconic
 - [x] `s02-athens-hero.jpg` — Acts 17 backdrop.
   *A robed figure seen from behind, speaking from a rocky outcrop before marble temples and columned porticoes at golden dusk, small crowd of listener silhouettes below. Ancient Athens by suggestion, not archaeology.*
 
-- [x] `s02-two-charts-hero.jpg` — "Our other two guides" (slide s02/10), the slide introducing Jonathan Pageau and Jordan Peterson. This is a backdrop behind text, so keep the composition calm and the center of the frame relatively quiet.
+- [x] `s02-two-charts-hero.jpg` — "Our other two guides" (slide s02/8), the slide introducing Jonathan Pageau and Jordan Peterson. This is a backdrop behind text, so keep the composition calm and the center of the frame relatively quiet.
   *Two old hand-drawn charts lying overlapped on a dark wooden table in candlelight, unmistakably the work of two different hands: the upper one on aged cream vellum drawn in fine brown ink with delicate crosshatching, the lower one on cooler blue-grey paper in bolder, darker strokes. Where the two sheets overlap, the same coastline and the same range of mountains line up exactly, and those matching contours catch the warm candlelight while everything else falls away into shadow. The subject of the painting is the agreement between two independently drawn maps: two hands, two styles, one shape. Warm gold candlelight against a deep blue-black room, painterly golden-age book-plate finish. No people, no hands, no faces. Critically, no lettering, labels, place names, compass roses with letters, or writing of any kind anywhere on the charts; contour lines, coastlines, and hatching only. Do not add decorative scrollwork that reads as script.*
 
 ## Session 03 — The Call of the Hero
