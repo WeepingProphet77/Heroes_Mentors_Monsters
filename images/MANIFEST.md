@@ -1,7 +1,7 @@
 # Image Manifest
 ## Heroes, Mentors, and Monsters
 
-This is the contract between content (Claude) and imagery (ChatGPT). Every image the course needs is listed here with its **exact filename**, where it appears, and an art direction prompt. Save finished images into this `images/` folder with these exact filenames. The HTML already links to them; when a file lands, it appears in the presentation automatically.
+Codex (ChatGPT) maintains this manifest together with the course content, imagery, and repository. Claude is inactive unless Jason explicitly instructs otherwise. Every image the course needs is listed here with its **exact filename**, where it appears, and an art direction prompt. Save finished images into this `images/` folder with these exact filenames. The HTML already links to them; when a file lands, it appears in the presentation automatically.
 
 **This file is self-contained.** Everything needed to generate a requested image is here: the
 house style below, and a complete brief for each outstanding request. GUIDANCE.md section 8 is
@@ -282,19 +282,20 @@ Wide-format artwork for the chapter-select menu. Keep each one simple and iconic
   *An illuminated manuscript page glowing on a dark writing desk, and on the handwritten lines, as though the ink had become a road, a tiny figure walking along the words toward the still unwritten space. Wonder, not whimsy.*
 
 - [x] `s11-authors-page-illus.jpg` — Placed on the Go Deeper slide (s11/8).
-  *An open book on a hilltop at dawn whose pages rise and become the landscape itself: the printed road lifting off the page into real green hills that lead toward a bright city on the horizon. If this one exceeds the concept, tell Jason; Claude will place it on slide s11/8.*
+  *An open book on a hilltop at dawn whose pages rise and become the landscape itself: the printed road lifting off the page into real green hills that lead toward a bright city on the horizon. If this one exceeds the concept, tell Jason and record the deviation after review.*
 
 ---
 
-## Delivery notes for ChatGPT
+## Image delivery and bookkeeping
 
-Your lane is making the picture. Everything after that belongs to Claude.
+Codex owns the complete image workflow under GUIDANCE.md section 7.
 
 1. Match filenames exactly, including hyphens; the HTML finds images by name.
-2. Save the file into `images/` and stop there. Do not update the checkbox, the outstanding-requests block, the counts, or the deviation notes. Claude keeps this file's records and will do it after checking the delivered image against its brief.
-3. Tell Jason what you delivered, and say so plainly if the image departs from its brief in any way. That note is useful; edits to this file are not.
-4. If you believe a slide needs an image not listed here, describe it to Jason. Claude will add the entry and place it in the HTML.
-5. Do not edit index.html, GUIDANCE.md, or README.md, and do not run any git command. Structural and repository changes route through Claude (GUIDANCE.md section 7).
+2. Save requested images into `images/`, check them against their briefs, and verify their placement in `index.html`.
+3. Update checkboxes, outstanding requests, delivery deviations, and counts together after verification. Keep README.md and GUIDANCE.md consistent with the manifest.
+4. Tell Jason what was delivered and describe any departure from the brief plainly. Preserve accepted deviations below.
+5. For an additional image, define its manifest entry and HTML placement before generation. Do not overwrite delivered artwork unless the revision is authorized.
+6. Record material changes in GUIDANCE.md and synchronize the repository as part of the work. No handoff to Claude is required.
 
 ## Proposed additions
 

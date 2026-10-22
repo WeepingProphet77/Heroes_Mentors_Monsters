@@ -1,9 +1,9 @@
 # Heroes, Mentors, and Monsters
 ## Project Guidance Document
 
-**Revised 9 August 2026 | Owner: Jason Davis**
+**Revised 21 October 2026 | Owner: Jason Davis | Active agent: Codex (ChatGPT)**
 
-This document governs all work on this project by any contributor, human or AI (Claude, ChatGPT, or others). Read it fully before creating or editing anything. When in doubt, follow this document. When this document is silent, ask Jason.
+This document governs all work on this project by any contributor, human or AI. Read it fully before creating or editing anything. Codex (ChatGPT) is the sole active agent for all aspects of the project; Claude is inactive unless Jason explicitly instructs otherwise. Follow Jason's current instructions and this document. Resolve routine implementation choices within the authorized scope; ask Jason when a material editorial or theological decision needs his direction.
 
 ---
 
@@ -124,7 +124,7 @@ Session numbering is fixed at the 11-session scheme for all filenames and image 
 - **Built for incremental growth.** Sessions are added to the file batch by batch as they are approved. Unbuilt sessions appear on the home screen as visible but clearly marked "coming" tiles, so the experience is always presentable.
 - **Visually rich but readable at distance.** Large type (minimum roughly 28px equivalent for body text on slides), high contrast, generous space. Designed for a 16:9 projector but responsive enough to review on a laptop. Images do the atmospheric work; text stays minimal. A slide should never be a paragraph.
 - **Standard slide flow per session:** title slide, hook, the pattern (one memorable sentence), story exploration (2 to 4 slides), Scripture (text on screen, readable), go deeper, the landing (Christ and us), discussion slide with the week's key question.
-- **Graceful missing images.** Every `<img>` gets meaningful `alt` text and the layout must not break if an image file is not yet present. This is essential because ChatGPT adds images after Claude builds structure.
+- **Graceful missing images.** Every `<img>` gets meaningful `alt` text and the layout must not break if an image file is not yet present. This allows structure and imagery to be developed at different stages.
 - **Maintainability rule:** because many contributions land in one file, the internal structure must be strictly sectioned and commented (one clearly delimited block per session) so any contributor can find and edit a session without touching the rest.
 
 ### 5.2 Teacher Notes (Word)
@@ -169,34 +169,33 @@ Heroes, Mentors, and Monsters/
 - `role` = one of: `hero` (main title/atmosphere image for a slide), `illus` (supporting illustration), `tile` (session artwork on the home screen menu), `icon` (small decorative element).
 - Examples: `s00-series-title-hero.jpg`, `s05-dragon-hoard-hero.jpg`, `s07-belly-of-whale-illus.jpg`.
 
-Claude writes the `<img>` tags with these exact filenames and descriptive alt text **before** the images exist. This filename-first workflow is the contract between the two AIs. A running image manifest lives at `images/MANIFEST.md`: every needed image, its filename, its slide, and a full art direction prompt. ChatGPT works from the manifest.
+Codex maintains the `<img>` tags with exact filenames and descriptive alt text, defining filenames before generating new images. A running image manifest lives at `images/MANIFEST.md`: every needed image, its filename, its slide, and a full art direction prompt. Codex maintains both the presentation and the manifest and verifies that they agree.
 
 ---
 
-## 7. Division of Labor
+## 7. Project Ownership and Agent Responsibility
 
-**Claude (structure, content, and the repository):**
-- Course content: session outlines, slide text, Scripture selection, teacher notes
-- All HTML/CSS/JS: builds and maintains the single index.html experience
-- The image manifest: filenames, placement, art direction prompts, and all of its bookkeeping, meaning checkboxes, the outstanding-requests block, delivery deviations, and counts
-- This document and README.md, including the Revision Log
-- The repository: all git operations, commits, branches, pushes, and merges to GitHub, and the GitHub Pages configuration
-- Assembly and consistency: merging contributions, enforcing this document
+**Effective 21 October 2026, at Jason's direction, Codex (ChatGPT) takes over all aspects of the project.** This replaces the former Claude/ChatGPT division of labor, including the image-only restriction on ChatGPT. Earlier Revision Log entries describe historical arrangements, not current permissions.
 
-**ChatGPT (image content only):**
-- Generates images per the manifest and saves them into `images/` with the exact manifest filenames
-- That is the whole lane. Claude takes ownership from the moment a file lands in `images/`.
-- Does not update checkboxes, the outstanding-requests block, deviation notes, counts, GUIDANCE.md, README.md, or anything in git. Bookkeeping that looks helpful still has to be verified and redone, so it costs time rather than saving it.
-- May propose additional images, or flag that a delivered image exceeds or misses its brief; say so to Jason, and Claude records it and places it
+**Codex (sole active agent):**
+- Course content: session outlines, slide text, Scripture selection, and teacher notes
+- All HTML/CSS/JS in the single `index.html` experience
+- Image generation, delivery, review, placement, and the complete image manifest, including filenames, art direction, checkboxes, outstanding requests, deviations, and counts
+- Project guidance, agent instructions, README, and Revision Log
+- Repository maintenance: git operations, commits, branches, pushes, merges, and GitHub Pages configuration
+- Verification and consistency across slides, notes, imagery, documentation, and GitHub
+
+**Claude (inactive):**
+- Does not work on this project unless Jason explicitly instructs otherwise
+- No work is routed to Claude for implementation, bookkeeping, review, or repository operations
+- `CLAUDE.md` remains as an explicit notice of this status for any future Claude session
 
 **Jason (owner and editor):**
-- Final say on all theology, tone, and content
+- Retains final say on theology, tone, and content
 - Reviews each session before it is considered done
-- Ferries context between the AIs when needed (e.g., pasting manifest entries into ChatGPT)
+- Determines whether and when another agent may resume work
 
-**Why the lane is drawn there.** Two agents editing the same bookkeeping produces drift that is expensive to catch: a count updated in one file and not another, a checkbox flipped while the README still calls the image outstanding, a status line that contradicts the manifest. One agent owning the record end to end is what keeps these four files telling the same story.
-
-**Rule for both AIs:** never rename existing files, never restructure folders, and never edit the other's domain without flagging it. Additive contributions are safe; destructive ones require Jason's approval.
+One active agent owns the work and its records end to end so that all project files remain consistent. Preserve existing filenames and folder structure. Destructive changes require Jason's approval.
 
 ---
 
@@ -236,9 +235,9 @@ What this changes for contributors: assume a session already exists before you w
 
 ### The build process (used for sessions 1 to 11)
 
-1. **Foundation first:** Claude builds the index.html shell (home screen, navigation, visual system) with session 1 complete inside it, plus session 1 notes and manifest entries. Jason reviews. That approved session becomes the pattern for all others.
+1. **Foundation first:** The active agent builds the index.html shell (home screen, navigation, visual system) with session 1 complete inside it, plus session 1 notes and manifest entries. Jason reviews. That approved session becomes the pattern for all others.
 2. **Then batches:** sessions produced in small batches (2 to 3 at a time), each reviewed before the next batch.
-3. **Images in parallel:** once a session's manifest entries exist, ChatGPT can generate its images at any time. HTML must always render acceptably without them.
+3. **Image generation:** once a session's manifest entries exist, Codex can generate its images. HTML must always render acceptably without them.
 
 ### The revision process (current)
 
@@ -258,12 +257,12 @@ Before you touch anything, confirm you can answer yes to all of these:
 - Does it work for a teenager and an adult at the same time, story first and theory second (section 3)?
 - Are my images evocative rather than derivative, with no baked-in text (section 8)?
 - Have I avoided em dashes entirely?
-- Am I staying inside my lane from section 7, or flagging it if not?
+- Am I following the active ownership arrangement in section 7?
 - If I changed, added, or moved a slide, did I renumber the matching notes document and re-budget its timeline (section 9, item 6)?
 - If I reworded a recurring phrase, did I search for it everywhere else it appears (section 9, item 7)?
 - If I cited Pageau or Peterson, is that mention corroborating from outside the faith or handing over a lens, and did I avoid turning Peterson into a weekly foil (section 2, item 10)?
 - Did I log anything material in the Revision Log (section 11)?
-- If an image landed in `images/`, did Claude, not ChatGPT, do the manifest bookkeeping and the commit (section 7)?
+- If an image landed in `images/`, did Codex verify it and update the manifest bookkeeping and repository consistently (section 7)?
 
 If any answer is no, stop and fix it or ask Jason.
 
@@ -272,6 +271,13 @@ If any answer is no, stop and fix it or ask Jason.
 ## 11. Revision Log
 
 Dated entries for material changes to the course. Newest first. Small copy fixes do not need an entry; anything that changes slide counts, theology, wording that recurs across files, or the structure of a notes document does.
+
+**21 October 2026**
+
+- At Jason's direction, Codex (ChatGPT) became the sole active agent for all aspects of the project: course content, slides, teacher notes, imagery, documentation, verification, and repository maintenance. Jason remains the owner and final editorial and theological authority.
+- Claude is inactive unless Jason explicitly instructs otherwise. The former split between Claude's structural work and ChatGPT's image-only work is superseded.
+- Updated sections 5 through 7, the working process and contributor checklist, AGENTS.md, CLAUDE.md, README.md, and the image manifest's workflow instructions to reflect the handover. Historical revision entries are retained as history.
+- No course content, slides, teacher notes, or artwork changed in this handover.
 
 **22 August 2026**
 
