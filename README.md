@@ -35,4 +35,24 @@ Repository: [WeepingProphet77/Heroes_Mentors_Monsters](https://github.com/Weepin
 
 ## Teaching it
 
-Open `index.html` and press a session tile. Arrow keys, spacebar, or click advance slides; Escape returns to the menu. The address bar tracks your position (for example `#s03/5`), so you can bookmark a slide or resume after a refresh. Each session's notes document includes preparation, a minute-by-minute timeline, talking points keyed to slide numbers, Scripture in full, two tiers of discussion questions, background reading, and pastoral notes.
+Open `index.html` and press a session tile. Arrow keys, spacebar, or click advance slides; Escape returns to the menu. The address bar tracks your position (for example `#s03/5`), so you can bookmark a slide or resume after a refresh. Hash indexes begin at zero; the example opens displayed slide 6. Each session's notes document includes preparation, a minute-by-minute timeline, talking points keyed to slide numbers, Scripture in full, two tiers of discussion questions, background reading, and pastoral notes.
+
+## Presentation controls
+
+The home screen includes **Resume teaching** (when this browser has a saved position) and a Word notes link for every session. Inside a session, use **Slides** to jump to any slide, **Notes** for its matching document, **Fullscreen**, or **Blank** to turn attention back to the room. The **?** button explains the controls.
+
+- Right arrow, Space, or Page Down: next item or slide.
+- Left arrow or Page Up: previous item or slide.
+- S: slide overview. A: show all questions or recap sentences.
+- F: fullscreen when the browser supports it. B: blank or restore the screen.
+- Escape: close an open panel, restore a blank screen, or return to the menu.
+
+Discussion questions and Session 11's ten-sentence recap appear one at a time within their original numbered slides. **Show all** displays the full set; **Show one** restores focused teaching. Small screens can scroll longer slides. Notes open in a separate tab or download according to the browser; keep private notes on a separate device or display.
+
+The interface and Word notes use the same one-based slide numbers. Existing zero-based hash bookmarks remain compatible: `#s03/5` opens displayed slide 6. An optional third segment remembers the question or recap item. Resume is saved locally in this browser, not shared between devices, and may be unavailable where browser storage is restricted.
+
+## Keeping slides and notes aligned
+
+Each slide has a permanent HTML ID, recorded with its current number and title in `slide-map.json`. Its matching Word talking point contains a corresponding invisible bookmark. Preserve these IDs when changing a title or moving a slide.
+
+Run `python3 scripts/check_course.py` before committing. It checks the 137-slide inventory, map, talking-point coverage, note bookmarks, timeline number ranges, and slide image paths. It cannot judge the meaning of a note or its timing: review those alongside any content change. Update the slide map, affected Word notes, and timelines in the same commit when changing the sequence. The October interface refresh retains the existing sequence and time budgets.

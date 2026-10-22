@@ -114,7 +114,7 @@ Session numbering is fixed at the 11-session scheme for all filenames and image 
   - Each session opens as its own **slide sequence** within the experience: full-viewport slides advanced by arrow keys, spacebar, click/tap, and on-screen next/back controls.
   - A persistent, unobtrusive way back to the home screen from any slide (small menu button or Escape key).
   - A subtle progress indicator showing position within the current session.
-  - **URL hash routing** (e.g. `index.html#s03/5` for session 3, slide 5) so any slide is bookmarkable and the teacher can resume mid-course after a refresh without clicking through.
+  - **URL hash routing** (e.g. `index.html#s03/5` for session 3, displayed slide 6 (legacy zero-based route)) so any slide is bookmarkable and the teacher can resume mid-course after a refresh without clicking through.
 - **Self-contained and offline-capable.** All CSS and JavaScript inline in the file. No CDN links, no external fonts required at runtime (system font stack with a serif display fallback is fine). The class may be taught in a room with no internet.
 - **Images via relative links only**, all pointing into the `images/` folder: `<img src="images/s03-heros-call-hero.jpg">`. Never absolute paths, never remote URLs.
 - **Built for incremental growth.** Sessions are added to the file batch by batch as they are approved. Unbuilt sessions appear on the home screen as visible but clearly marked "coming" tiles, so the experience is always presentable.
@@ -269,6 +269,11 @@ If any answer is no, stop and fix it or ask Jason.
 Dated entries for material changes to the course. Newest first. Small copy fixes do not need an entry; anything that changes slide counts, theology, wording that recurs across files, or the structure of a notes document does.
 
 **21 October 2026**
+
+- **Presentation usability refresh.** Enlarged text, strengthened text-side image gradients, made session tiles keyboard-accessible, and added session notes links, saved resume, slide overview, fullscreen, blank screen, keyboard help, and persistent Back/Next controls. Small screens can scroll long content; reduced-motion preferences are respected.
+- **Slides and notes remain aligned.** All 137 slides retain their order and old bookmark routes. Discussion questions and the Session 11 recap advance within their original numbered slides. All eleven Word documents include control guidance and discussion cues. Session 11 notes now correctly recall commissioning on slide 10 before the discussion leads to the finale on slide 12; the timeline remains unchanged.
+- **Seven dense slides shortened.** Sessions 1 (slide 10), 2 (slides 12 and 13), 5 (slide 9), 9 (slide 9), 10 (slide 9), and 11 (slide 9) now carry three short thoughts. Their fuller former slide explanations remain in the matching Word talking points. Teaching time budgets are unchanged.
+- **Permanent slide identities.** Added stable HTML IDs, matching invisible Word bookmarks, `slide-map.json`, and `scripts/check_course.py` to check order, titles, note coverage, timeline number ranges, and image links. Editorial synchronization still requires reading the matching notes, not merely passing a structural check.
 
 - **Ideas without personal introductions.** At Jason's direction, removed explicit mentions of Peterson and Pageau throughout the presentation and all eleven teacher notes documents. Retained their underlying symbolic and psychological insights in the course's own prose, with Scripture as the authority. Removed the biographical, pronunciation, personal-faith, and named reading-list material from the notes; preserved source provenance in section 2 of this guidance.
 - **Session 2 slide 9 repurposed.** "Our Other Two Guides" became "The World and the Human Heart," explaining the two observations that lead into the Logos synthesis. The matching preparation, talking point, and three-minute timeline slot now teach those ideas directly. All 137 slides retain their order, all 71 images remain placed, and slide-number references remain unchanged. Updated README and manifest descriptions to match.
