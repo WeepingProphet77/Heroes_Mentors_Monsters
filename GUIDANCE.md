@@ -13,9 +13,9 @@ Heroes, Mentors, and Monsters is a church class for older teens and adults, taug
 
 Human beings, made in the image of a speaking God, tell stories that express our understanding of that reality. Most stories fade. But the ones that capture the most real elements of reality persist and endure; they survive precisely because they are onto something true. This is why the same archetypes recur in Star Wars, The Lord of the Rings, The Chronicles of Narnia, Harry Potter, Pinocchio, The Legend of Zelda, the Grimm fairy tales, and myths across cultures. These stories resonate because they touch patterns so real that we all inherently recognize them. The claim of the class, following C.S. Lewis and J.R.R. Tolkien, is that these enduring stories are echoes of the one True Story. The patterns point beyond themselves, and in the gospel the myth became fact.
 
-This conviction is developed with help from two main guides. Jonathan Pageau and The Symbolic World supply the account of reality's symbolic structure. Jordan B. Peterson supplies the account of why the human soul navigates by these stories.
+The course brings together two insights: reality has a meaningful symbolic structure, and human beings recognize and navigate that structure through stories. The familiar and the unknown, order and chaos, the hero's willingness to face danger, the mentor's wisdom, and the costly gift of oneself remain central to the lessons. These ideas are taught through concrete stories and tested against Scripture.
 
-From Dr. Jordan B. Peterson, particularly *Maps of Meaning: The Architecture of Belief*: Peterson demonstrates that these archetypal stories are not decoration but load-bearing: they are the maps by which human beings have always navigated between order and chaos, the known and the unknown. The hero who voluntarily confronts the dragon and returns with the treasure is not merely a plot; it is a description of how a human life is supposed to work. Where Pageau shows us the symbolic structure of reality, Peterson shows us that the human soul is built to run on that structure. The class draws on both, and then goes one step further than Peterson does: the map is accurate because there is a Mapmaker, and in Christ the map and the territory meet.
+The psychological observation is that enduring stories help people live. The theological foundation is that the map is accurate because there is a Mapmaker, and in Christ the map and the territory meet.
 
 ### The Logos: the keystone idea
 
@@ -25,7 +25,7 @@ The idea that holds the whole class together is the **Logos** of John 1:1-5 (NIV
 
 The Greek word John chose, *Logos*, meant more than "word." To the Greek mind it was the rational ordering principle of the cosmos, the reason the world hangs together and makes sense. John's staggering claim is that this ordering principle is not an abstraction or a force. It is a Person, he was in the beginning with God, he *is* God, and he took on flesh and dwelt among us.
 
-This is the keystone that joins everything the class draws on. If Pageau is right that reality has a symbolic structure, and Peterson is right that our souls are built to navigate by story, the Logos is why: all things were made *through him*, so his pattern is stamped on everything, including us. The structure of reality is personal. Every session should stand on this, and the light-in-darkness image of John 1:5 is the visual and thematic signature of the whole course.
+This is the keystone that joins everything the class draws on. Reality has a meaningful structure, and our souls recognize it through story. The Logos is why: all things were made *through him*, so his pattern is stamped on everything, including us. The structure of reality is personal. Every session should stand on this, and the light-in-darkness image of John 1:5 is the visual and thematic signature of the whole course.
 
 **The one-sentence pitch:** The stories we love keep telling us the same thing because it is true, and Scripture tells it first and best.
 
@@ -38,7 +38,7 @@ This is the keystone that joins everything the class draws on. If Pageau is righ
 
 ## 2. Theological Framing and Guardrails
 
-This class is taught in a **Protestant/Evangelical** context. Pageau is Eastern Orthodox; we use his insights about symbolism and the structure of reality gratefully, but the class stands on these commitments:
+This class is taught in a **Protestant/Evangelical** context. Its symbolic and psychological insights are governed by these commitments:
 
 1. **Scripture is the final authority.** Symbolism serves the text; it never overrides or replaces it. Every symbolic reading must be defensible from the Bible itself.
 2. **Christ is the center.** Every archetype finds its fulfillment in Jesus. He is the true Hero who slays the dragon, the true Mentor who sends the Helper, the one who faces the true Monster (sin, death, the serpent) and wins. Every session lands here.
@@ -49,17 +49,13 @@ This class is taught in a **Protestant/Evangelical** context. Pageau is Eastern 
 5. **Stories are illustrations, not authorities.** Star Wars and Harry Potter are useful because they borrow the pattern. They are never treated as inspired, and their flaws and worldview gaps can be named honestly.
 6. **Avoid tradition-specific practices** that would be foreign to the audience: veneration of icons, prayers to saints, and similar. Patristic and Orthodox sources may be quoted where they illuminate, the same way we would quote Lewis or Augustine.
 7. **Handle magic in fiction pastorally.** Some families are cautious about Harry Potter and fairy tale magic. The teacher notes must include a brief, respectful treatment: the difference between literary magic as story mechanics and the occult practices Scripture forbids. Never mock the concern.
-8. **Use Peterson's psychology as a witness, not a foundation.** Maps of Meaning establishes brilliantly that the archetypal patterns are real, universal, and indispensable to human life. But Peterson's account is psychological and stops short of the stories being true in history. The class affirms his observations and then presses through them: the patterns are written into us because the God of Scripture wrote them into reality, and the Hero's story actually happened, in Judea, in the flesh. Peterson material should be presented as "even viewed purely psychologically, the pattern holds," never as the ceiling of the claim. Where his framing diverges from orthodox Christian teaching (e.g., treating the resurrection primarily as archetype), the teacher notes must name the divergence plainly and kindly.
+8. **Psychology illuminates experience; Scripture supplies the foundation.** Retain the insights about story, responsibility, fear, truthfulness, and sacrifice. Teach them directly without setting up a recurring debate with a modern thinker. Psychological usefulness does not establish biblical truth, and the resurrection is a real event, not merely an archetype of renewal. Where the distinction matters, explain it from the biblical text.
 9. **Default Bible translation: NIV**, chosen for accessibility. Quote it accurately. ESV or KJV may be used where a specific rendering helps, with the translation noted.
-10. **Introduce the guides once, then use their tools.** Pageau and Peterson are introduced to the class by name exactly once, on session 2 slide 9, where each is given an occupation, a one-line job in the course (Pageau: the pattern is in the world; Peterson: the pattern is in us), and the rule that governs every later mention: both are guides rather than authorities, and Scripture remains the measure of both. An earlier version of that rule read "neither man is preaching at you, and that is exactly why they are worth hearing." It was retired on 22 August 2026: it describes Peterson well and misdescribes Pageau, who is an Orthodox Christian thinker and is named as one on the same slide. The corroboration point still holds for Peterson and belongs in the teacher notes, not on the wall as a rule covering both men. Session 1 states their two ideas without attaching the names, so the class weighs the ideas before it is told whose they are. After session 2, a surname may appear bare.
+10. **Teach the ideas without introducing their modern interpreters.** At Jason's direction on 21 October 2026, remove explicit mentions of Jordan B. Peterson and Jonathan Pageau from the presentation and teacher notes, including biographies, pronunciation guidance, personal-faith discussion, named comparisons, and recommended reading. Retain the inspiration drawn from their work: symbolic structure, human recognition of patterns, responsibility, descent and renewal, sacrifice, and the movement from margin to center. Session 2 slide 9 now explains the world and the human heart directly; slide 11 brings them together under the Logos. Do not replace the names with anonymous appeals to experts. Explain the ideas in the course's own words, through stories and Scripture. Do not strip an author's name from a direct quotation and present it as original prose; paraphrase the idea instead. Lewis, Tolkien, and the other literary references remain where they serve the lesson.
 
-    Two rules follow. First, **every later mention must be doing one of two jobs**: corroborating the claim from outside the faith, or handing the teacher a lens that makes something visible. A name that is not doing one of those is name-dropping; drop the name and keep the idea. Second, **do not let Peterson become a foil.** The formula "Peterson says X, true as far as it goes, but" is corrosive if it runs every week: it trains the room to hear his name as the setup for a correction, and an outside witness who is always slightly wrong is worth nothing as corroboration. Press past him only where the divergence genuinely matters (sessions 2, 6, and 8). Elsewhere let him be simply right, and say so. Session 7 says so explicitly, on purpose.
+**Editorial provenance, not teaching material:** Jonathan Pageau's *The Symbolic World* and Jordan B. Peterson's *Maps of Meaning: The Architecture of Belief* and biblical lectures remain influences on the project's development. This record preserves that debt without adding their introductions or personal positions to the lessons. The earlier Revision Log records the superseded approach.
 
-    **Pageau's tradition is stated, not hidden.** The class is told he is Eastern Orthodox, on the slide and in the notes. Discovering it later, unprompted, reads as concealment; naming it in advance models charitable reading across traditions. Guardrail 6 still governs: his tradition's distinctive practices are not imported.
-
-    **Peterson's personal faith is not the course's business and not its foundation.** The teacher notes answer the question honestly if it is asked, without claiming him and without dismissing him. Do not write a dated claim about his religious position into any deliverable; the class does not rest on it either way, and if it did he would not be worth citing.
-
-Key friendly voices to draw on: C.S. Lewis ("myth became fact," Narnia), J.R.R. Tolkien ("On Fairy-Stories," eucatastrophe), G.K. Chesterton (Orthodoxy, "The Ethics of Elfland"), Jonathan Pageau (The Symbolic World, symbolism of chaos and order, the pattern of heaven and earth), Jordan B. Peterson (Maps of Meaning, the biblical lecture series; order and chaos, the known and the unknown, voluntary confrontation with the dragon, the redemptive power of truthful speech, sacrifice as the discovery that the future can be bargained with).
+Other voices to draw on: C.S. Lewis ("myth became fact," Narnia), J.R.R. Tolkien ("On Fairy-Stories," eucatastrophe), and G.K. Chesterton (Orthodoxy, "The Ethics of Elfland").
 
 ---
 
@@ -72,7 +68,7 @@ Session arc (this shapes both slides and notes):
 - **The Hook:** Open with a story moment with immediate pull. A scene description, an image, a short retelling. Earn attention before asking for thought.
 - **The Pattern:** Name the archetype in one memorable sentence anyone can repeat a week later.
 - **The Scripture:** Find the pattern in the Bible and show it was there first. This is the center of gravity of the session.
-- **The Depth:** The Pageau/Lewis/Tolkien material: symbolism, the structure of reality, true myth. With this audience it can run 10 to 15 minutes and carry real intellectual weight. Teens are often the most hungry for exactly this; do not water it down for them.
+- **The Depth:** Symbolism, the structure of reality, and the Lewis/Tolkien account of myth becoming fact (with the word myth defined). With this audience it can run 10 to 15 minutes and carry real intellectual weight. Teens are often the most hungry for exactly this; do not water it down for them.
 - **The Landing:** Christ, and us. Where is this pattern in your life this week?
 
 Discussion questions come in two tiers in the teacher notes: **Starter** (accessible, story-level, good for warming up a quiet room or drawing out teens) and **Deeper** (theological and personal). The teacher chooses in the moment.
@@ -99,7 +95,7 @@ Eleven sessions, with a built-in flex: sessions can compress to 9 or expand to 1
 | 10 | The Return of the King | Kingship, restoration, the world set right | Isaiah 9:6-7; Revelation 19-21 | Aragorn's return, the fall of the Empire, "everything sad coming untrue" |
 | 11 | Living Inside the Story | We are in the story now; Christ the true Hero, the Spirit our guide | Hebrews 12:1-2; Ephesians 2:10 | The class's own stories; every thread tied to Christ |
 
-Notes on sessions 7 and 8: they are deliberately adjacent and distinct. Session 7 is the **pattern** of descent and return (down into the belly, up transformed). Session 8 is the **choice** at the heart of it: the hero who could walk away and instead lays down his life for others, and the redemption that flows from it. Session 8 sits closest to the gospel of any session and should be treated as the summit of the course's middle act. John 10:18 ("No one takes it from me, but I lay it down of my own accord," NIV) is its keystone verse, and the Peterson emphasis on sacrifice as the deepest discovery of story belongs here.
+Notes on sessions 7 and 8: they are deliberately adjacent and distinct. Session 7 is the **pattern** of descent and return (down into the belly, up transformed). Session 8 is the **choice** at the heart of it: the hero who could walk away and instead lays down his life for others, and the redemption that flows from it. Session 8 sits closest to the gospel of any session and should be treated as the summit of the course's middle act. John 10:18 ("No one takes it from me, but I lay it down of my own accord," NIV) is its keystone verse, and the insight that sacrifice reveals a greater good beyond present comfort belongs here.
 
 **Compression to 9:** merge 5+6 (The Monster, outside and within); fold 2 into 1.
 **Expansion to 12:** split session 2 into "Why Stories Ring True" and "True Myth: Tolkien, Lewis, and the Gospel"; or add a session on "The Wasteland and the Garden" (exile and homecoming; Eden, Babylon, the Shire).
@@ -138,10 +134,10 @@ Session numbering is fixed at the 11-session scheme for all filenames and image 
   5. Talking points keyed to slide numbers (guidance, not a word-for-word script)
   6. Scripture texts printed in full (NIV)
   7. Discussion questions in two tiers (Starter / Deeper)
-  8. Go Deeper notes: the Pageau/Lewis/Tolkien material with citations, so a teacher can answer follow-ups
+  8. Go Deeper notes: the symbolic and literary background with relevant Scripture and literary references, so a teacher can answer follow-ups
   9. Pastoral notes where needed (e.g., the magic-in-fiction conversation in the Harry Potter sessions)
   10. Take-home line: the one sentence families should carry out the door
-- Tone: warm, confident, practical. Written for a volunteer teacher who loves the Lord and the stories but has not read Pageau.
+- Tone: warm, confident, practical. Written for a volunteer teacher who loves the Lord and the stories but has not studied symbolism or the psychology of story.
 
 ### 5.3 Optional Supporting Files
 
@@ -260,7 +256,7 @@ Before you touch anything, confirm you can answer yes to all of these:
 - Am I following the active ownership arrangement in section 7?
 - If I changed, added, or moved a slide, did I renumber the matching notes document and re-budget its timeline (section 9, item 6)?
 - If I reworded a recurring phrase, did I search for it everywhere else it appears (section 9, item 7)?
-- If I cited Pageau or Peterson, is that mention corroborating from outside the faith or handing over a lens, and did I avoid turning Peterson into a weekly foil (section 2, item 10)?
+- Have I kept the presentation and teacher notes free of the explicit introductions and name references excluded by section 2, item 10, while preserving the underlying ideas?
 - Did I log anything material in the Revision Log (section 11)?
 - If an image landed in `images/`, did Codex verify it and update the manifest bookkeeping and repository consistently (section 7)?
 
@@ -274,6 +270,8 @@ Dated entries for material changes to the course. Newest first. Small copy fixes
 
 **21 October 2026**
 
+- **Ideas without personal introductions.** At Jason's direction, removed explicit mentions of Peterson and Pageau throughout the presentation and all eleven teacher notes documents. Retained their underlying symbolic and psychological insights in the course's own prose, with Scripture as the authority. Removed the biographical, pronunciation, personal-faith, and named reading-list material from the notes; preserved source provenance in section 2 of this guidance.
+- **Session 2 slide 9 repurposed.** "Our Other Two Guides" became "The World and the Human Heart," explaining the two observations that lead into the Logos synthesis. The matching preparation, talking point, and three-minute timeline slot now teach those ideas directly. All 137 slides retain their order, all 71 images remain placed, and slide-number references remain unchanged. Updated README and manifest descriptions to match.
 - At Jason's direction, Codex (ChatGPT) became the sole active agent for all aspects of the project: course content, slides, teacher notes, imagery, documentation, verification, and repository maintenance. Jason remains the owner and final editorial and theological authority.
 - Claude is inactive unless Jason explicitly instructs otherwise. The former split between Claude's structural work and ChatGPT's image-only work is superseded.
 - Updated sections 5 through 7, the working process and contributor checklist, AGENTS.md, CLAUDE.md, README.md, and the image manifest's workflow instructions to reflect the handover. Historical revision entries are retained as history.

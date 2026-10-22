@@ -1,6 +1,6 @@
 # Heroes, Mentors, and Monsters
 
-A church class for older teens and adults on the structure of reality, the stories that endure, and the Logos who stands behind both. Based on Scripture, with help from Jonathan Pageau, Jordan B. Peterson, C.S. Lewis, and J.R.R. Tolkien.
+A church class for older teens and adults on the structure of reality, the stories that endure, and the Logos who stands behind both. Grounded in Scripture, with illustrations from enduring stories and literary insights from C.S. Lewis and J.R.R. Tolkien.
 
 ## What's here
 
