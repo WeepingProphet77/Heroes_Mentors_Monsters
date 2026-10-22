@@ -270,6 +270,8 @@ Dated entries for material changes to the course. Newest first. Small copy fixes
 
 **21 October 2026**
 
+- **Quieter presentation controls.** At Jason’s request, removed the persistent top toolbar and session label from the audience view. Teaching tools now open from a small bottom Tools button or the T key and close on slide changes or an artwork tap. Reduced top padding to give the artwork and content more room. Slide content, numbering, and teacher-note references remain unchanged.
+
 - **Presentation usability refresh.** Enlarged text, strengthened text-side image gradients, made session tiles keyboard-accessible, and added session notes links, saved resume, slide overview, fullscreen, blank screen, keyboard help, and persistent Back/Next controls. Small screens can scroll long content; reduced-motion preferences are respected.
 - **Slides and notes remain aligned.** All 137 slides retain their order and old bookmark routes. Discussion questions and the Session 11 recap advance within their original numbered slides. All eleven Word documents include control guidance and discussion cues. Session 11 notes now correctly recall commissioning on slide 10 before the discussion leads to the finale on slide 12; the timeline remains unchanged.
 - **Seven dense slides shortened.** Sessions 1 (slide 10), 2 (slides 12 and 13), 5 (slide 9), 9 (slide 9), 10 (slide 9), and 11 (slide 9) now carry three short thoughts. Their fuller former slide explanations remain in the matching Word talking points. Teaching time budgets are unchanged.

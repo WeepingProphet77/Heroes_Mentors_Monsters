@@ -39,7 +39,7 @@ Open `index.html` and press a session tile. Arrow keys, spacebar, or click advan
 
 ## Presentation controls
 
-The home screen includes **Resume teaching** (when this browser has a saved position) and a Word notes link for every session. Inside a session, use **Slides** to jump to any slide, **Notes** for its matching document, **Fullscreen**, or **Blank** to turn attention back to the room. The **?** button explains the controls.
+The home screen includes **Resume teaching** (when this browser has a saved position) and a Word notes link for every session. Inside a session, select **Tools** (or press T) to reveal the teaching controls. They close when you change slides or tap the artwork. Use **Slides** to jump to any slide, **Notes** for its matching document, **Fullscreen**, or **Blank** to turn attention back to the room. The **?** button explains the controls.
 
 - Right arrow, Space, or Page Down: next item or slide.
 - Left arrow or Page Up: previous item or slide.
